@@ -1,0 +1,2 @@
+% set params
+SUBBAND = 'ALL';

@@ -1,0 +1,1 @@
+w = audioread('C:\Project\IFEFSR\SpeechData\NECTEC\CF013_Va002\CF013_Va002_001.wav');
