@@ -36,7 +36,7 @@ for alpha = ALPHAs
                     %% copy test wav folder
                     srcPath = 'F:\IFEFSR\ExpSphinx\FC1616_LOWPASS_2\wav\an4test_clstk';
                     if (a==2)
-                        srcPath = 'F:\IFEFSR\ExpSphinx\FC816_LOWPASS_2\wav\an4test_clstk';
+                        srcPath = 'F:\IFEFSR\ExpSphinx\FC816_DECIMATION\wav\an4test_clstk';
                     end
                     destPath = [outPrefix expCase '/Sphinx5Feat/' dataCase '/' dataSet '/A' alphaStr '/an4/wav/an4test_clstk'];
                     copyfile(srcPath, destPath, 'f');

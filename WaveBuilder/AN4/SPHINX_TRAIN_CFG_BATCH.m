@@ -1,6 +1,6 @@
 %% sphinx train cfg batch
 FEAT_PARAMS;
-globalCFG = 'F:\IFEFSR\ExpSphinx\sphinx_train_2.cfg';
+globalCFG = 'F:\IFEFSR\ExpSphinx\sphinx_train.cfg';
 featExtractor = 'Sphinx5Feat';
 outPrefix = 'F:/IFEFSR/ExpSphinx/';
 
