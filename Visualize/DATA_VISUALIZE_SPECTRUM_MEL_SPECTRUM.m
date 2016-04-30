@@ -16,24 +16,24 @@ sig4 = fread(fid, 'int16');
 fclose(fid);
 
 sig1 = decompressAudioFC(f2,8000,16000,[]);
-sig2 = decompressAudioFCV2(f2,8000,16000,[]);
-sig3 = decompressAudioFCV2(f3,16000,16000,[]);
+sig2 = decompressAudioFC(f2,8000,16000,[]);
+sig3 = decompressAudioFC(f3,16000,16000,[]);
 sigOri = sig4;
 sigSub = sigOri(1:2:end);
 alpha = 0.95;
 
-zz = 0.01;
+zz = 0.1;
 
 lpFilter = [1 zz-1];
 % sig2 = filter( lpFilter, 1, sig2 );
 % sig3 = filter( lpFilter, 1, sig3 );
-% sig2 = filter( 1 , lpFilter, sig2 );
-% sig3 = filter( 1 , lpFilter, sig3 );
+% sig2 = filter( zz , lpFilter, sig2 );
+% sig3 = filter( zz , lpFilter, sig3 );
 
-f = [0 0.3 0.3 1];            % Frequency breakpoints
+f = [0 0.4 0.41 1];            % Frequency breakpoints
 m = [1 1 1 0 ];                  % Magnitude breakpoints
 b = fir2(60,f,m);               % FIR filter design
-b1 = fir1(8,0.75);
+b1 = fir1(30,0.75);
 % freqz(b,1,512);                 % Frequency response of filter
 sig2 = filtfilt(b1,1,sig2);       % Zero-phase digital filtering
 sig3 = filtfilt(b1,1,sig3);       % Zero-phase digital filtering

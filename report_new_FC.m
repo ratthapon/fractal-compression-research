@@ -26,19 +26,32 @@ sig4_2 = sigOri(1:2:end);
 % sig4_2 = interp(sig4_2, 2);
 alpha = 0.95;
 
-zz = 0.95;
+zz = 0.01;
 
-sig2 = filter( zz, [1 zz - 1], sig2 ); 
-sig3 = filter( zz, [1 zz - 1], sig3 ); 
+lpFilter = [1 zz-1];
+% sig2 = filter( lpFilter, 1, sig2 );
+% sig3 = filter( lpFilter, 1, sig3 );
+% sig2 = filter( 1 , lpFilter, sig2 );
+% sig3 = filter( 1 , lpFilter, sig3 );
+
+f = [0 0.3 0.3 1];            % Frequency breakpoints
+m = [1 1 1 0 ];                  % Magnitude breakpoints
+b = fir2(60,f,m);               % FIR filter design
+b1 = fir1(8,0.75);
+freqz(b,1,512);                 % Frequency response of filter
+sig2 = filtfilt(b1,1,sig2);       % Zero-phase digital filtering
+sig3 = filtfilt(b1,1,sig3);       % Zero-phase digital filtering
+
+
 
 [MFCC1, FBE1, SPEC1] = mfcc( sig1, 16000,...
-Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
+    Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 [MFCC2, FBE2, SPEC2] = mfcc( sig2, 16000,...
-Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
+    Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 [MFCC3, FBE3, SPEC3] = mfcc( sig3, 16000,...
-Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
+    Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 [MFCC4, FBE4, SPEC4] = mfcc( sigOri, 16000,...
-Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
+    Tw, Ts, alpha, @hamming, [LF HF], M, C+1, L );
 
 figure(1);
 subplot(4,1,1),plot(sig1); axis([5100 5700 -700 700]); title('Original 16k')
@@ -47,10 +60,10 @@ subplot(4,1,3),plot(sig3); axis([5100 5700 -700 700]); title('FC 16k')
 subplot(4,1,4),plot(sig4_2); axis([5100/2 5700/2 -700 700]); title('Original 8k')
 
 alpha = 1;
-sig1_filtered = filter( [1 0], 1, sig1 ); 
-sig2_filtered = filter( 0.5, [1 0.5-1], sig2 ); 
-sig3_filtered = filter( [1 0.5-1], 1, sig3 ); 
-sig4_filtered = filter( [1 0.5-1], 1, sig4_2 ); 
+sig1_filtered = filter( [1 0], 1, sig1 );
+sig2_filtered = filter( 0.5, [1 0.5-1], sig2 );
+sig3_filtered = filter( [1 0.5-1], 1, sig3 );
+sig4_filtered = filter( [1 0.5-1], 1, sig4_2 );
 
 alpha = 0.1;
 fSig1 = filter( [1 -alpha], 1, sig1 ); % fvtool( [1 -alpha], 1 );
@@ -97,8 +110,8 @@ corr(MFCC2(:),MFCC3(:))
 
 % corr(sig1(1:11192),sig2(1:11192)')
 % corr(sig1(1:11192),sig3(1:11192)')
-% 
-% 
-% 
+%
+%
+%
 % corr(fSig1(1:11192),fSig2(1:11192)')
 % corr(fSig1(1:11192),fSig3(1:11192)')

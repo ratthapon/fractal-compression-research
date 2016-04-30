@@ -60,7 +60,7 @@ for ds = 1:2
                         
                         %% gen sphinx run scripts
                         cmd = [{['cd /d ' outPrefix expCase '/' featExtractor '/' dataCase '/' dataSet '/A' alphaStr '/an4']},...
-                            {'python F:/IFEFSR/Sphinx5/sphinxtrain/scripts/sphinxtrain run'}];
+                            {'python F:/IFEFSR/Sphinx/sphinxtrain/scripts/sphinxtrain run'}];
                         cmdFileName = ['F:\IFEFSR\ExpSphinx\Sphinx5Feat_' expCase '_' dataCase '_' dataSet '_' alphaStr '.bat'];
                         fileID = fopen(cmdFileName,'w');
                         fprintf(fileID,'%s\n',cmd{:});

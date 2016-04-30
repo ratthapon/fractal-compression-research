@@ -1,17 +1,22 @@
 %% wav coppy
 % % an4 decoder
-inDirS = [{'F:\IFEFSR\AudioFC\FC\AN4_8K_CURVEFIT_LM\'}, ...
-    {'F:\IFEFSR\AudioFC\FC\QR\AN4_16K\'}];
-inDir = inDirS{1};
+inDirS = [{'F:\IFEFSR\AudioFC\FC\QR\AN4_DECIMATION_QR_GPU\'}, ...
+    {'F:\IFEFSR\AudioFC\FC\QR\AN4_16K\'}]; %AN4_16K\'}];
 a = 2;
-fileList = importdata('F:\IFEFSR\AudioFC\an4traintest.txt');
-outDir = 'F:\IFEFSR\ExpSphinx\FC816_LOWPASS_2\';
+inDir = inDirS{3-a};
+fileList = importdata('F:\IFEFSR\AudioFC\an4test.txt');
+outDir = ['F:\IFEFSR\ExpSphinx\FC' num2str(16/a) '16_FIR8\'];
 fromto = [1 size(fileList,1)];
 outFs = 16000;
 for i = fromto(1):fromto(2)
     load([inDir fileList{i}]);
     sig = decompressAudioFC(f, outFs/a, outFs, []);
-    sig = filter( 0.95, [1 0.95 - 1], sig ); 
+%     sig = filter( 0.001, [1 0.001 - 1], sig ); 
+%     f = [0 0.3 0.3 1];            % Frequency breakpoints
+%     m = [1 1 1 0 ];                  % Magnitude breakpoints
+%     b = fir2(60,f,m);               % FIR filter design
+%     % freqz(b,1,512);                 % Frequency response of filter
+%     sig = filtfilt(b,1,sig);       % Zero-phase digital filtering
     
     subDir = regexp(fileList{i},'/','split');
     wavDir = [outDir '/wav/' subDir{1} '/' subDir{2}];
