@@ -10,7 +10,7 @@ dat = load(['F:\IFEFSR\AudioFC\FC\QR\AN4_8K\' fName '.mat']);
 f2 = dat.f;
 dat = load(['F:\IFEFSR\AudioFC\FC\QR\AN4_16K\' fName '.mat']);
 f3 = dat.f;
-inFName = ['F:\IFEFSR\SpeechData\an4\wav\' fName '.raw'];
+inFName = ['F:\IFEFSR\SpeechData\an4_fir1_8_75\wav\' fName '.raw'];
 fid = fopen(inFName, 'r');
 sig4 = fread(fid, 'int16');
 fclose(fid);
@@ -35,8 +35,8 @@ m = [1 1 1 0 ];                  % Magnitude breakpoints
 b = fir2(60,f,m);               % FIR filter design
 b1 = fir1(30,0.75);
 % freqz(b,1,512);                 % Frequency response of filter
-sig2 = filtfilt(b1,1,sig2);       % Zero-phase digital filtering
-sig3 = filtfilt(b1,1,sig3);       % Zero-phase digital filtering
+% sig2 = filtfilt(b1,1,sig2);       % Zero-phase digital filtering
+% sig3 = filtfilt(b1,1,sig3);       % Zero-phase digital filtering
 
 
 
