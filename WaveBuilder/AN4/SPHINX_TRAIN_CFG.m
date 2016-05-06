@@ -62,8 +62,8 @@ cfg{:}{cmnLineIdx} = '$CFG_CMN = "current";';
 cfg{:}{acgLineIdx} = '$CFG_AGC = "max";';
 cfg{:}{normLineIdx} = '$CFG_VARNORM = "yes";';
 
-trainDir = ['F:\IFEFSR\ExpSphinx\FC1616_LOWPASS_001\wav'];
-subDir = ['F:\IFEFSR\ExpSphinx\FC816_LOWPASS_001\wav'];
+trainDir = ['F:/IFEFSR/ExpSphinx/FC1616_LOWPASS_001/wav'];
+subDir = ['F:/IFEFSR/ExpSphinx/FC816_LOWPASS_001/wav'];
 if (a==1), testDir = trainDir ; elseif (a==2), testDir = subDir; end;
 cfg{:}{trainWavDirLineIdx} = ['$CFG_WAVFILES_DIR = "' trainDir '";'];
 cfg{:}{testWavDirLineIdx} = ['$CFG_TEST_WAVFILES_DIR = "' testDir '";'];
