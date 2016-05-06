@@ -39,11 +39,19 @@ for i = 1:size(cfg{1}, 1)
    if (~isempty(regexp(cfg{1}{i},'\$CFG_VARNORM = ','match')))
        normLineIdx = i;
    end
+   if (~isempty(regexp(cfg{1}{i},'\$CFG_WAVFILES_DIR = ','match')))
+       trainWavDirLineIdx = i;
+   end
+   if (~isempty(regexp(cfg{1}{i},'\$CFG_TEST_WAVFILES_DIR = ','match')))
+       testWavDirLineIdx = i;
+   end
     
 end
 % assign new value
-cfg{:}{baseDirLineIdx} = ['$CFG_BASE_DIR = "' outPrefix expCase  ...
-    '/' featExtractor '/' dataCase '/' dataSet '/A' alphaStr '/an4' '";'];
+baseDir = [outPrefix expCase  ...
+    '/' featExtractor '/' dataCase '/' dataSet '/A' alphaStr];
+
+cfg{:}{baseDirLineIdx} = ['$CFG_BASE_DIR = "' baseDir '/an4' '";'];
 cfg{:}{mLineIdx} = ['$CFG_NUM_FILT = ' num2str(M) ';'];
 cfg{:}{hfLineIdx} = ['$CFG_HI_FILT = ' num2str(HF) ';'];
 cfg{:}{cLineIdx} = ['$CFG_VECTOR_LENGTH = ' num2str(C) ';'];
@@ -53,6 +61,12 @@ cfg{:}{featureLineIdx} = ['$CFG_FEATURE = "' featType '";'];
 cfg{:}{cmnLineIdx} = '$CFG_CMN = "current";';
 cfg{:}{acgLineIdx} = '$CFG_AGC = "max";';
 cfg{:}{normLineIdx} = '$CFG_VARNORM = "yes";';
+
+trainDir = ['F:\IFEFSR\ExpSphinx\FC1616_LOWPASS_001\wav'];
+subDir = ['F:\IFEFSR\ExpSphinx\FC816_LOWPASS_001\wav'];
+if (a==1), testDir = trainDir ; elseif (a==2), testDir = subDir; end;
+cfg{:}{trainWavDirLineIdx} = ['$CFG_WAVFILES_DIR = "' trainDir '";'];
+cfg{:}{testWavDirLineIdx} = ['$CFG_TEST_WAVFILES_DIR = "' testDir '";'];
 
 % save
 etcDir = [outPrefix expCase '/' featExtractor '/' dataCase '/' dataSet '/A' alphaStr '/an4/etc/'];
