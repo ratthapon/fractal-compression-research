@@ -1,14 +1,15 @@
 %% missclassificaiton analysis for sphinx corpus
 mfccparams;
 
-originDir = 'F:\IFEFSR\ExpSphinx\FC816_DECIMATION\';
-inDir = 'F:\IFEFSR\ExpSphinx\caseA\Sphinx5Feat\cross\FC\A95\an4\';
+originDir = 'F:\IFEFSR\ExpSphinx\FC816\';
+inDir = 'F:\IFEFSR\ExpSphinx\FC1616\';
 clusterDir = 'misscluster';
 
 %% read result record
+alignDir = ['F:\IFEFSR\ExpSphinx\caseA\Sphinx5Feat\cross\FC\A95\an4\'];
 alignFile = 'result\an4.align';
 fileList  = importdata('F:\IFEFSR\ExpSphinx\etc\an4_test.fileids'); % test file list
-fid = fopen([inDir alignFile],'r');
+fid = fopen([alignDir alignFile],'r');
 resultRecord = textscan(fid,'%[^\n]'); % results list
 fclose(fid);
 resultRecord = resultRecord{1}(4:4:end-1);
