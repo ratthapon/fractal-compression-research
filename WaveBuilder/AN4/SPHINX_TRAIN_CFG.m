@@ -62,6 +62,12 @@ cfg{:}{cmnLineIdx} = '$CFG_CMN = "current";';
 cfg{:}{acgLineIdx} = '$CFG_AGC = "max";';
 cfg{:}{normLineIdx} = '$CFG_VARNORM = "yes";';
 
+trainDir = ['F:/IFEFSR/SpeechData/an4/wav'];
+subDir = ['F:/IFEFSR/SpeechData/an4_8k/wav'];
+if strcmp(dataSet, 'FC')
+    trainDir = ['F:/IFEFSR/ExpSphinx/FC1616/wav'];
+    subDir = ['F:/IFEFSR/ExpSphinx/FC816/wav'];
+end
 if (a==1), testDir = trainDir ; elseif (a==2), testDir = subDir; end;
 cfg{:}{trainWavDirLineIdx} = ['$CFG_WAVFILES_DIR = "' trainDir '";'];
 cfg{:}{testWavDirLineIdx} = ['$CFG_TEST_WAVFILES_DIR = "' testDir '";'];
