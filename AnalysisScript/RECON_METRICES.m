@@ -23,7 +23,7 @@ for i = 1:size(fileList, 1)
     
     [ psnrV, sc, fc, mc, fsc, ffc, fmc] = measure( sigOri, sigRec );
     
-    psnrValues = [psnrValues sc];
+    psnrValues = [psnrValues psnrV];
     
     specCorr = [specCorr sc];
     fbeCorr = [fbeCorr fc];
