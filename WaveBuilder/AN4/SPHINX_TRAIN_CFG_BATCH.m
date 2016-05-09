@@ -3,6 +3,8 @@ FEAT_PARAMS;
 globalCFG = 'F:\IFEFSR\ExpSphinx\sphinx_train.cfg';
 featExtractor = 'Sphinx5Feat';
 outPrefix = 'F:/IFEFSR/ExpSphinx/';
+trainDir = ['F:\IFEFSR\ExpSphinx\FC1616_LOWPASS_001\wav'];
+subDir = ['F:\IFEFSR\ExpSphinx\FC816_LOWPASS_001\wav'];
 
 t = tic;
 for ds = 1:2
