@@ -34,7 +34,7 @@ for k = 1:K
     xlabel('time'),ylabel('frequency order (0 = original)'),zlabel('spectrum magnitude');
     
 end
-
+figure(1),stem(spectrum);
 
 
 
