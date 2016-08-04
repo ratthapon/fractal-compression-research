@@ -17,11 +17,12 @@ end
 
 wav = R;
 %% reconstruction process
-for iter = 1:maxIter
-    % each iter, signal should have higher consrast
-    rIdx = 1; % initial range block poiter
-    for scaleIdx = 1:size(F,1)
-        f = F{scaleIdx};
+for scaleIdx = 1:size(F,2)
+    f = F{scaleIdx};
+    for iter = 1:maxIter
+        % each iter, signal should have higher consrast
+        rIdx = 1; % initial range block poiter
+        
         for fIdx = 1:size(f,1)
             % for each individual code
             % retrive S,O parameter
