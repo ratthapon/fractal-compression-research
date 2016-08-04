@@ -9,7 +9,7 @@ fid = fopen(inFName, 'r');
 sig = fread(fid, 'int16');
 sig = sig(6001:6256);
 fclose(fid);
-figure(2),plot(sig)
+% figure(2),plot(sig)
 
 %% fast fourier transform
 nfft = 2^nextpow2( size(sig,1) );     % length of FFT analysi
@@ -46,6 +46,7 @@ end
 set(gca,'XTick',[32:32:nfft]);
 set(gca,'XTickLabel',[1:nfft/32]*2);
 set(gca,'YTick',0:K);
+% freqLabel = [{'Original Signal'}];
 freqLabel = [{'Original Signal'}];
 for i = 1:K
     freqLabel = [freqLabel, {num2str(i * 800)}];
