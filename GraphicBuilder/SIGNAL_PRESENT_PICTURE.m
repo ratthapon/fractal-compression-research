@@ -57,7 +57,7 @@ f3 = figure(3);
 plot(t,x,'LineWidth',1,'MarkerSize',2);
 % hold on
 % stem(t,x,'LineWidth',1);
-axis([0 1 -0.5 0.5]);
+axis([0 1.5 -0.5 0.5]);
 % title('continuous signal')
 xlabel('time')
 ylabel('amplitude')

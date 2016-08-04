@@ -2,7 +2,7 @@
 %% !!! ALL INPUT DATA MUST ALREADY ON GPU MEMORY !!!
 t = tic;
 rIdx = 1; % start sample idx
-nC = 1+2; % nCoeff
+nC = 1+1; % nCoeff
 nPart = length(hpart);
 nSample = sum(hpart);
 FC_QR = zeros(nPart, nC + 3, 'single'); %ehl
@@ -55,8 +55,8 @@ for fIdx = 1:nPart % each range block
             reshape(refDat, [dScale rbs] )... % reshape params
             ,1)'; % sum params, sum each column
         % building linear problem
-        X = [EXPZERO (1:rbs)' zeros(1,rbs)']; % input data
-        X = (X - repmat(mean(X,2),1,3)) ./ repmat(var(X,[],2),1,3);
+        X = [EXPZERO D]; % input data
+%         X = (X - repmat(mean(X,2),1,nC)) ./ repmat(var(X,[],2),1,nC);
         A = (X'*X) + I;
         detA = det(A);
 %         partSizeIdx = (log(rbs)-log(min(hpart)))/log(2) +1;
@@ -155,39 +155,49 @@ for fIdx = 1:nPart % each range block
     % buiding least square parameters
 end
 toc(t)
-save('F:\IFEFSR\LS_ANALYZE\ws2');
+% save('F:\IFEFSR\LS_ANALYZE\ws2');
 
 % figure,plot([FC_SVD_PINV(:,1) FC_INV(:,1) FC_QR(:,1) FC_POLYFIT(:,1)]);
 % figure,plot([FC_SVD_PINV(:,2) FC_INV(:,2) FC_QR(:,2) FC_POLYFIT(:,2)]);
-sumSingularElement = zeros(6, 4);
-rangeSize = [4 8 16 32 64 128];
-for psIdx = [1:4 6]
-    rbs = rangeSize(psIdx);
-    nBatch = (nSample - rbs*dScale - 4) * 2; % calculate possible
-    for dIdx = 1:nBatch
-        if (SINGULAR{dIdx,psIdx}(1) - 1) <= eps
-            sumSingularElement(psIdx, 1) = sumSingularElement(psIdx, 1) + 1;
-        end
-        if (SINGULAR{dIdx,psIdx}(2) > 1e6)
-            sumSingularElement(psIdx, 2) = sumSingularElement(psIdx, 2) + 1;
-        end
-        if (SINGULAR{dIdx,psIdx}(3) < 1e-6)
-            sumSingularElement(psIdx, 3) = sumSingularElement(psIdx, 3) + 1;
-        end
-        if (SINGULAR{dIdx,psIdx}(4)) <= 1e-5
-            sumSingularElement(psIdx, 4) = sumSingularElement(psIdx, 4) + 1;
-        end
-    end
-end
-QR_SIG = decompressAudioFCWithTime(FC_QR,8000,16000,[]);
+% sumSingularElement = zeros(6, 4);
+% rangeSize = [4 8 16 32 64 128];
+% for psIdx = [1:4 6]
+%     rbs = rangeSize(psIdx);
+%     nBatch = (nSample - rbs*dScale - 4) * 2; % calculate possible
+%     for dIdx = 1:nBatch
+%         if (SINGULAR{dIdx,psIdx}(1) - 1) <= eps
+%             sumSingularElement(psIdx, 1) = sumSingularElement(psIdx, 1) + 1;
+%         end
+%         if (SINGULAR{dIdx,psIdx}(2) > 1e6)
+%             sumSingularElement(psIdx, 2) = sumSingularElement(psIdx, 2) + 1;
+%         end
+%         if (SINGULAR{dIdx,psIdx}(3) < 1e-6)
+%             sumSingularElement(psIdx, 3) = sumSingularElement(psIdx, 3) + 1;
+%         end
+%         if (SINGULAR{dIdx,psIdx}(4)) <= 1e-5
+%             sumSingularElement(psIdx, 4) = sumSingularElement(psIdx, 4) + 1;
+%         end
+%     end
+% end
+
+%%
+% QR_SIG = decompressAudioFCWithTime(FC_QR,8000,16000,[]);
+QR_SIG = decompressAudioFC(FC_QR,8000,16000,20);
+b1 = fir1(8,0.4);
+QR_SIG = filtfilt(b1,1,QR_SIG);       % Zero-phase digital filtering
 % INV_SIG = decompressAudioFC(FC_INV,16000,16000,[]);
 % SVD_PINV_SIG = decompressAudioFC(FC_SVD_PINV,16000,16000,[]);
 % POLYFIT_SIG = decompressAudioFC(FC_POLYFIT,16000,16000,[]);
 figure(2);
+hold on
 subplot(5,1,1),plot(hsignal);
-subplot(5,1,2),plot(QR_SIG);
+hold on
+stem(hsignal);
+axis([1 32 -20 20])
+subplot(5,1,2),plot(QR_SIG); stem(QR_SIG);
+axis([1 64 -20 20])
 % subplot(5,1,3),plot(INV_SIG);
 % subplot(5,1,4),plot(SVD_PINV_SIG);
 % subplot(5,1,5),plot(POLYFIT_SIG);
-save('F:\IFEFSR\LS_ANALYZE\ws2');
+% save('F:\IFEFSR\LS_ANALYZE\ws2');
 
