@@ -1,4 +1,4 @@
-function [ REC_SIG ] = MultiScaleFC( sig, RBSs, lambda )
+function [ REC_SIG ] = MultiScaleFC( sig, RBSs, Fin_out, lambda )
 %MULTISCALEFC Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,5 +10,5 @@ for rbsIdx = 1:length(RBSs)
     multiScaleFC(rbsIdx) = {FC_QR};
 end
 
-REC_SIG = MultiScaleAFCDecoder(multiScaleFC, 8000, 16000, 15);
+REC_SIG = MultiScaleAFCDecoder(multiScaleFC, Fin_out(1), Fin_out(2), 15);
 
