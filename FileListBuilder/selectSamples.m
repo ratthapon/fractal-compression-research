@@ -12,7 +12,7 @@ addPrefix = @(list, prefix) cellfun( ...
     'UniformOutput', false);
 
 nSamples = 5;
-fsSet = [{''}, {'_8k'}];
+fsSet = [{'_8k'}, {''}];
 % samplesIdx = floor(rand([1 nSamples]) * length(allFilePaths));
 samplesIdx = [816 801 422 706 184];
 

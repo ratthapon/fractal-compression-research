@@ -4,11 +4,13 @@ function [ complexSignal ] = createComplexSignal( Fs )
 % Fs = 8000;
 dt = 1/Fs;                   % seconds per sample
 t = (0:dt:1.5)';     % seconds
-complexSignal = zeros(200, 1);
-for i = 1:70
+nSample = 400 * floor(Fs/8000);
+complexSignal = zeros(nSample, 1);
+nBand = 70 * floor(Fs/8000);
+for i = 1:nBand
     freq = i * 55;
     hsignal = 20*sin(2*pi* (freq) *t);
-    hsignal = hsignal(1:200);
+    hsignal = hsignal(1:nSample);
     complexSignal = complexSignal + hsignal;
 end
 end
