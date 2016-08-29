@@ -5,6 +5,7 @@ RBS = [2 4 8];
 partitionType = [{'ADP_RBS'}, {'FIXED_PARTITION_RBS'}];
 coeffVal = [0.99, 1.2];
 pThresh = [{'1e-6'}, {'0'}];
+cd F:\GitRepo\fractal-compression\AudioCompressor\target
 
 for fsIdx = 1:length(FS)
     for coeffIdx = 1:length(coeffVal)
