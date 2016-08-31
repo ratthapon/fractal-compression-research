@@ -228,7 +228,7 @@ for fsIdx = 1:2
             psnrMatrix_2((coeffIdx - 1)*(length(RBS) + 2) + 2, 1) = coeffVal(coeffIdx);
             psnrMatrix_2((coeffIdx - 1)*(length(RBS) + 2) + 2, 2) = 0;
             psnrMatrix_2((coeffIdx - 1)*(length(RBS) + 2) + 2, 3) = 1; % adaptive partition
-            psnrMatrix_2((coeffIdx - 1)*(length(RBS) + 2) + 2, numIndependVar + fsIdx) ...
+            psnrMatrix_2((coeffIdx - 1)*(length(RBS) + 2) + 2, numIndependVar + ((idx-1)*2) + fsIdx) ...
                 = PSNR(sig, recSig);
             
         end

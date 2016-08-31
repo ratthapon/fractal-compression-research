@@ -1,7 +1,7 @@
-function plotSigVsFreqRes( sig, caption, Fs )
+function f = plotSigVsFreqRes( sig, caption, Fs )
 %PLOTSIGVSFREQRES Summary of this function goes here
 %   Detailed explanation goes here
-f = figure;
+f = figure();
 
 subplot(2,1,1), plot(sig);
 title(caption);
