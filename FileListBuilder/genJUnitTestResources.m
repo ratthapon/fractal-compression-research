@@ -1,4 +1,5 @@
 
+%% Create baseline synth raw signal
 sig = createComplexSignal(8000);
 outputPath = 'F:\GitRepo\fractal-compression\AudioCompressor\src\test\resources\';
 
@@ -15,10 +16,3 @@ rawwrite([ direct 'synth-16-20.raw' ], sig16(1:20));
 rawwrite([ direct 'synth-16-40.raw' ], sig16(21:60));
 rawwrite([ direct 'synth-16-50.raw' ], sig16(61:110));
 rawwrite([ direct 'synth-16-70.raw' ], sig16(111:180));
-
-
-
-
-
-
-
