@@ -23,6 +23,7 @@ FC_QR = zeros(nPart, nC + 3, 'single'); %ehl
 
 % overlimit coeff indicator
 for fIdx = 1:nPart % each range block
+    currentBlock = [num2str(fIdx) ' / ' num2str(nPart)]
     rbs = rangePartition(fIdx);
     nBatch = (nSample - b*n+1) * 2; % calculate possible
     
@@ -88,14 +89,14 @@ for fIdx = 1:nPart % each range block
         SE = (R - F).^2;
         
         % limit coeff
-        if any(abs(QR_C(2:end)) < 1.2)
-            QR_SSE(batchIdx) = sum(SE);
-        else
-%             QR_C(batchIdx, 1:end) = [sum(R)/rbs zeros(1, nC - 1)];
-%             F = X * QR_C(batchIdx, 1: nC)';
-%             SE = (R - F).^2;
-            QR_SSE(batchIdx) = inf;
-        end
+%         if any(abs(QR_C(2:end)) < 1.2)
+%             QR_SSE(batchIdx) = sum(SE);
+%         else
+% %             QR_C(batchIdx, 1:end) = [sum(R)/rbs zeros(1, nC - 1)];
+% %             F = X * QR_C(batchIdx, 1: nC)';
+% %             SE = (R - F).^2;
+%             QR_SSE(batchIdx) = inf;
+%         end
         
     end
     %% store fractal code
