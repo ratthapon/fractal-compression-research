@@ -18,7 +18,8 @@ ticDecode = tic;
 REC_SIG = MultiVarFixAFCDecoder(multiVarFC, Fin_out(1), Fin_out(2), 15);
 decodeTime = toc(ticEncode)
 
-
+figure(1), plot(REC_SIG)
+save F:/IFEFSR/MDBS/ws.mat
 
 
 
