@@ -1,4 +1,4 @@
-function [ FC_QR ] = MultiVarFixAFCEncoder( sig, rangePartition, ...
+function [ FC ] = MultiVarFixAFCEncoder( sig, rangePartition, ...
     degree, lambda, nScale, baseRange )
 %FIXENCODER Summary of this function goes here
 %   Detailed explanation goes here
@@ -19,18 +19,18 @@ rIdx = 1; % start sample idx
 nC = degree*nScale + 1; % nCoeff
 nPart = length(rangePartition);
 nSample = sum(rangePartition);
-FC_QR = zeros(nPart, nC + 3, 'single'); %ehl
+FC = zeros(nPart, nC + 3, 'single'); %ehl
 
 % overlimit coeff indicator
 for fIdx = 1:nPart % each range block
-    currentBlock = [num2str(fIdx) ' / ' num2str(nPart)]
+    currentBlock = [num2str(fIdx) ' / ' num2str(nPart)];
     rbs = rangePartition(fIdx);
     nBatch = (nSample - b*n+1) * 2; % calculate possible
     
     I = diag(ones(nC, 1, 'single')); % identity matrix for inversion
     EXPZERO = ones(rbs, 1, 'single'); % power zero data
-    QR_SSE = zeros(nBatch, 1, 'single'); % sum square error
-    QR_C = zeros(nBatch, nC, 'single'); % coefficient temp
+    SSE = zeros(nBatch, 1, 'single'); % sum square error
+    C = zeros(nBatch, nC, 'single'); % coefficient temp
     
     dat = sig(1: nSample); % data mat
     revDat = sig(nSample: -1: 1); % data mat
@@ -78,19 +78,19 @@ for fIdx = 1:nPart % each range block
             % Ainv = A\I; % inverse input mat
             B = X'*R; % calculate output mat
             % solve least square
-            QR_C(batchIdx, 1:nC) = (A\B)';
+            C(batchIdx, 1:nC) = (A\B)';
             
         elseif nC == 2 && (detA == 0)
-            QR_C(batchIdx, [1 2]) = [sum(R)/rbs 0];
+            C(batchIdx, [1 2]) = [sum(R)/rbs 0];
         end
         
         % compute sum square error
-        F = X * QR_C(batchIdx, 1: nC)';
+        F = X * C(batchIdx, 1: nC)';
         SE = (R - F).^2;
         
         % limit coeff
 %         if any(abs(QR_C(2:end)) < 1.2)
-%             QR_SSE(batchIdx) = sum(SE);
+            SSE(batchIdx) = sum(SE);
 %         else
 % %             QR_C(batchIdx, 1:end) = [sum(R)/rbs zeros(1, nC - 1)];
 % %             F = X * QR_C(batchIdx, 1: nC)';
@@ -101,15 +101,15 @@ for fIdx = 1:nPart % each range block
     end
     %% store fractal code
     % find the minimum sum square error of models
-    [sseValue, QR_minSSEIdx] = min(QR_SSE);
-    FC_QR(fIdx,1:nC) = QR_C(QR_minSSEIdx,1:nC);
+    [sseValue, QR_minSSEIdx] = min(SSE);
+    FC(fIdx,1:nC) = C(QR_minSSEIdx,1:nC);
     % represent reverse domain map by negative domain index
     if (QR_minSSEIdx > nBatch / 2)
         QR_minSSEIdx = -(nBatch - QR_minSSEIdx + 2);
     end
-    FC_QR(fIdx,nC+1) = QR_minSSEIdx;
-    FC_QR(fIdx,nC+2) = rbs;
-    FC_QR(fIdx,end) = sseValue;
+    FC(fIdx,nC+1) = QR_minSSEIdx;
+    FC(fIdx,nC+2) = rbs;
+    FC(fIdx,end) = sseValue;
     
 end
 toc(t)
