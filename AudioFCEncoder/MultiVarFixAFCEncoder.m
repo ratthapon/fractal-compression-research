@@ -7,10 +7,10 @@ function [ FC ] = MultiVarFixAFCEncoder( sig, rangePartition, ...
 % map index k to sample at scale s_(th) of n scales. this for base2
 b = baseRange;
 n = nScale + 1;
-dStart_b2 = @(k ,s) 2^(n-1) - 2^(s-1) + k; 
+dStart_b2 = @(k ,s) 2^(n-1) - 2^(s-1) + k;
 dEnd_b2 = @(k ,s) 2^(n-1) + 2^(s-1) + k;
 
-dStart = @(k ,s) k + (n-s) * (b/2); 
+dStart = @(k ,s) k + (n-s) * (b/2);
 dEnd = @(k ,s) k + (n+s) * (b/2) - 1;
 
 %% fix parameters
@@ -21,26 +21,30 @@ nPart = length(rangePartition);
 nSample = sum(rangePartition);
 FC = zeros(nPart, nC + 3, 'single'); %ehl
 
+dat = sig(1: nSample); % data mat
+revDat = sig(nSample: -1: 1); % data mat
+
 % overlimit coeff indicator
 for fIdx = 1:nPart % each range block
     currentBlock = [num2str(fIdx) ' / ' num2str(nPart)];
     rbs = rangePartition(fIdx);
     nBatch = (nSample - b*n+1) * 2; % calculate possible
     
+    %% allocate arrays
     I = diag(ones(nC, 1, 'single')); % identity matrix for inversion
     EXPZERO = ones(rbs, 1, 'single'); % power zero data
     SSE = zeros(nBatch, 1, 'single'); % sum square error
     C = zeros(nBatch, nC, 'single'); % coefficient temp
+    X = zeros(rbs, n, 'single'); % covariance matrix
     
-    dat = sig(1: nSample); % data mat
-    revDat = sig(nSample: -1: 1); % data mat
+    %% Get range block
     R = dat(rIdx: rIdx + rbs - 1); % range block
     rIdx = rIdx + rbs;
     
     %% match range block by comparing every possible domain blocks
     for batchIdx = 1:nBatch
         % first order matrix
-        X = EXPZERO;
+        X(:, 1) = EXPZERO;
         
         % calculate multivariate input
         for s = 2:n
@@ -58,24 +62,17 @@ for fIdx = 1:nPart % each range block
                 reshape(refDat, [s rbs] )... % reshape params
                 ,1)'; % sum params, sum each column
             % building linear problem
-            X = [X D]; % input data
+            X(:, s) = D; % input data
         end
-%         Xu = repmat(mean(X), rbs, 1);
-%         Xsd = repmat(std(X), rbs, 1);
-%         Xnorm = X;
-%         Xnorm(:,2:end) = (X(:,2:end) - Xu(:,2:end)) ./ Xsd(:,2:end);
-%         Rnorm = (R - mean(R)) / std(R);
         
-        % X = (X - repmat(mean(X,2),1,nC)) ./ repmat(var(X,[],2),1,nC);
+        %% calculate covariance matrix
         A = (X'*X) + (lambda * I);
         detA = det(A);
         
-        % handle if can not find solution
+        %% handle if can not find solution
         % this exception only handle for n coeff == 2
-        
         if nC ~= 2 || (nC == 2 && detA ~= 0)
             % the solution maybe found somewhere
-            % Ainv = A\I; % inverse input mat
             B = X'*R; % calculate output mat
             % solve least square
             C(batchIdx, 1:nC) = (A\B)';
@@ -84,30 +81,21 @@ for fIdx = 1:nPart % each range block
             C(batchIdx, [1 2]) = [sum(R)/rbs 0];
         end
         
-        % compute sum square error
+        %% compute sum square error
         F = X * C(batchIdx, 1: nC)';
         SE = (R - F).^2;
-        
-        % limit coeff
-%         if any(abs(QR_C(2:end)) < 1.2)
-            SSE(batchIdx) = sum(SE);
-%         else
-% %             QR_C(batchIdx, 1:end) = [sum(R)/rbs zeros(1, nC - 1)];
-% %             F = X * QR_C(batchIdx, 1: nC)';
-% %             SE = (R - F).^2;
-%             QR_SSE(batchIdx) = inf;
-%         end
+        SSE(batchIdx) = sum(SE);
         
     end
     %% store fractal code
     % find the minimum sum square error of models
-    [sseValue, QR_minSSEIdx] = min(SSE);
-    FC(fIdx,1:nC) = C(QR_minSSEIdx,1:nC);
+    [sseValue, minSSEIdx] = min(SSE);
+    FC(fIdx,1:nC) = C(minSSEIdx,1:nC);
     % represent reverse domain map by negative domain index
-    if (QR_minSSEIdx > nBatch / 2)
-        QR_minSSEIdx = -(nBatch - QR_minSSEIdx + 2);
+    if (minSSEIdx > nBatch / 2)
+        minSSEIdx = -(nBatch - minSSEIdx + 2);
     end
-    FC(fIdx,nC+1) = QR_minSSEIdx;
+    FC(fIdx,nC+1) = minSSEIdx;
     FC(fIdx,nC+2) = rbs;
     FC(fIdx,end) = sseValue;
     
