@@ -44,6 +44,7 @@ for fIdx = 1:nPart % each range block
             sum( ...
             reshape(refDat, [dScale rbs] )... % reshape params
             ,1)'; % sum params, sum each column
+        X(:, 2) = D; % input data
         
         % building linear problem
         % first order matrix
