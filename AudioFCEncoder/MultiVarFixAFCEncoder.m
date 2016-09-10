@@ -20,7 +20,16 @@ nC = degree*nScale + 1; % nCoeff
 nPart = length(rangePartition);
 nSample = sum(rangePartition);
 FC = zeros(nPart, nC + 3, 'single'); %ehl
+CSlices = 1:nC;
 
+%% generate range blocks indices
+rSlices = zeros(1, nPart + 1);
+rSlices(1) = 0;
+for i = 1:nPart
+    rSlices(i + 1) = sum(rangePartition(1:i));
+end
+
+%% define data
 dat = sig(1: nSample); % data mat
 revDat = sig(nSample: -1: 1); % data mat
 
@@ -35,15 +44,14 @@ for fIdx = 1:nPart % each range block
     EXPZERO = ones(rbs, 1, 'single'); % power zero data
     SSE = zeros(nBatch, 1, 'single'); % sum square error
     C = zeros(nBatch, nC, 'single'); % coefficient temp
-    X = zeros(rbs, n, 'single'); % covariance matrix
     
     %% Get range block
-    R = dat(rIdx: rIdx + rbs - 1); % range block
-    rIdx = rIdx + rbs;
+    R = dat(rSlices(fIdx) + 1: rSlices(fIdx + 1)); % range block
     
     %% match range block by comparing every possible domain blocks
     for batchIdx = 1:nBatch
         % first order matrix
+        X = zeros(rbs, n, 'single'); % covariance matrix
         X(:, 1) = EXPZERO;
         
         % calculate multivariate input
@@ -75,14 +83,14 @@ for fIdx = 1:nPart % each range block
             % the solution maybe found somewhere
             B = X'*R; % calculate output mat
             % solve least square
-            C(batchIdx, 1:nC) = (A\B)';
+            C(batchIdx, CSlices) = (A\B)';
             
         elseif nC == 2 && (detA == 0)
-            C(batchIdx, [1 2]) = [sum(R)/rbs 0];
+            C(batchIdx, CSlices) = [sum(R)/rbs 0];
         end
         
         %% compute sum square error
-        F = X * C(batchIdx, 1: nC)';
+        F = X * C(batchIdx, CSlices)';
         SE = (R - F).^2;
         SSE(batchIdx) = sum(SE);
         
@@ -90,14 +98,13 @@ for fIdx = 1:nPart % each range block
     %% store fractal code
     % find the minimum sum square error of models
     [sseValue, minSSEIdx] = min(SSE);
-    FC(fIdx,1:nC) = C(minSSEIdx,1:nC);
+    code = [C(minSSEIdx,1:nC) minSSEIdx rbs sseValue]';
     % represent reverse domain map by negative domain index
     if (minSSEIdx > nBatch / 2)
         minSSEIdx = -(nBatch - minSSEIdx + 2);
+        code(nC + 1) = minSSEIdx;
     end
-    FC(fIdx,nC+1) = minSSEIdx;
-    FC(fIdx,nC+2) = rbs;
-    FC(fIdx,end) = sseValue;
+    FC(fIdx, :) = code;
     
 end
 toc(t)
