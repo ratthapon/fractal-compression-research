@@ -37,7 +37,7 @@ plot(speech, 'b')
 plot(REC_SIG, 'r')
 
 mkdir('F:/IFEFSR/MDBS/')
-save('F:/IFEFSR/MDBS/ws.mat')
+save('F:/IFEFSR/MDBS/ws_full_length.mat')
 
 
 
