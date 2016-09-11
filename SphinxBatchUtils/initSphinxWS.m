@@ -45,7 +45,7 @@ else
 end
 
 %% config exp
-[ cfg ] = parseSphinxCfg( fullfile(etcPath, 'sphinx_train.cfg') );
+[ cfg ] = parseSphinxCfg( fullfile(expDirPrefix, 'sphinx_train.cfg') ); % read global config
 [ cfg ] = setSphinxCfg( cfg, 'CFG_BASE_DIR', outDir );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_NUM_FILT', num2str( M ));
 [ cfg ] = setSphinxCfg( cfg, 'CFG_HI_FILT', num2str( HF ) );
@@ -59,7 +59,7 @@ end
 [ cfg ] = setSphinxCfg( cfg, 'CFG_TEST_WAVFILES_DIR', ...
     fullfile(expDirPrefix, [ dataSet testSuffix ], 'wav') );
 
-writeSphinxCfg(cfg, etcPath);
+writeSphinxCfg(cfg, fullfile(etcPath, 'sphinx_train.cfg'));
 
 end
 
