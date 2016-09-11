@@ -1,7 +1,7 @@
 %% co-parameters
 warning off
 speech  = rawread( 'F:\IFEFSR\an4\wav\an4_clstk\fash\an251-fash-b.raw' );
-speech = speech(6001:6400);
+speech = speech(6001:6640);
 rbs = 4;
 RBS = [ 128 64 32 16 8 4 ]; % determine by number of block, not block size
 nScale = length(RBS);
@@ -9,7 +9,7 @@ lambda = 0e4;
 Fs_inout = [16000 16000];
 
 %% vary base rbs
-baseRBS = [4 8 16];
+baseRBS = [4 8 16 32];
 baseRBSCorr = zeros(2, length(baseRBS));
 for i = 1:length(baseRBS)
     rbs = baseRBS(i)
