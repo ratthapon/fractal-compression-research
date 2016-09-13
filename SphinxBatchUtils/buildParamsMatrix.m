@@ -1,6 +1,7 @@
 function [ paramsSet ] = buildParamsMatrix( varargin )
-%BUILDPARAMSMATRIX Summary of this function goes here
-%   Detailed explanation goes here
+%BUILDPARAMSMATRIX Combined the each parameters to single 2d-cell for
+%convenient coding.
+%   varargin - arrays of cells that contain parameter
 
 %% estimate number of params set
 nParamsSet = 1;

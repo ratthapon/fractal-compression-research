@@ -46,7 +46,7 @@ end
 
 %% config exp
 [ cfg ] = parseSphinxCfg( fullfile(expDirPrefix, 'sphinx_train.cfg') ); % read global config
-[ cfg ] = setSphinxCfg( cfg, 'CFG_BASE_DIR', outDir );
+[ cfg ] = setSphinxCfg( cfg, 'CFG_BASE_DIR', normpath(outDir) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_NUM_FILT', num2str( M ));
 [ cfg ] = setSphinxCfg( cfg, 'CFG_HI_FILT', num2str( HF ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VECTOR_LENGTH', num2str( C ) );
@@ -55,9 +55,9 @@ end
 [ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"max"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VARNORM', '"yes"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_WAVFILES_DIR', ...
-    fullfile(expDirPrefix, [ dataSet trainSuffix ], 'wav') );
+    normpath(fullfile(expDirPrefix, [ dataSet trainSuffix ], 'wav')) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_TEST_WAVFILES_DIR', ...
-    fullfile(expDirPrefix, [ dataSet testSuffix ], 'wav') );
+    normpath(fullfile(expDirPrefix, [ dataSet testSuffix ], 'wav')) );
 
 writeSphinxCfg(cfg, fullfile(etcPath, 'sphinx_train.cfg'));
 
