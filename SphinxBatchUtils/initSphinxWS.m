@@ -20,10 +20,10 @@ copyfile(globalEtcPath, etcPath, 'f');
 featType = '1s_c';
 if strcmpi(featCase, 'caseA') 
     featType = '1s_c'; 
-    M = 13; 
+    M = 30; 
 elseif strcmpi(featCase, 'caseB') 
     featType = '1s_c_d_dd'; 
-    M = 30;
+    M = 13;
 end
 
 % config input wave directory
@@ -51,9 +51,10 @@ end
 [ cfg ] = setSphinxCfg( cfg, 'CFG_HI_FILT', num2str( HF ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VECTOR_LENGTH', num2str( C ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_FEATURE', ['"' featType '"']);
+[ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"none"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_CMN', '"current"' );
-[ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"max"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VARNORM', '"yes"' );
+[ cfg ] = setSphinxCfg( cfg, 'CFG_STATESPERHMM', '3' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_WAVFILES_DIR', ...
     ['"' normpath(fullfile(expDirPrefix, [ dataSet trainSuffix ], 'wav')) '"']);
 [ cfg ] = setSphinxCfg( cfg, 'CFG_TEST_WAVFILES_DIR', ...
