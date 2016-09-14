@@ -13,7 +13,7 @@ P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
     FEATCASE, DATASET, RECOGCASE);
 
 %% iterate for each parameters combination
-for expIdx = 1:1 %size(P, 1);
+for expIdx = 1:size(P, 1);
     expDirPrefix = P{expIdx, 1};
     preemAlphaStr = P{expIdx, 2};
     featExtractor = P{expIdx, 3};
@@ -37,5 +37,8 @@ for expIdx = 1:1 %size(P, 1);
         featCase, dataSet, recogCase );
     
     %% accumulate results
+    logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, ...
+        featCase, dataSet, recogCase )
+    
 end
 
