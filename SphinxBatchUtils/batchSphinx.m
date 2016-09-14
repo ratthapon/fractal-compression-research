@@ -1,4 +1,4 @@
-function batchInitSphinxWS()
+function batchSphinx()
 %BATCHINITSPHINXWS Launch batch operations that initialize Sphinx workspace
 %directory
 
@@ -29,8 +29,12 @@ for expIdx = 1:1 %size(P, 1);
         featCase, dataSet, recogCase );
     
     %% launch Sphinxtrain
+    trainSphinx( expDirPrefix, preemAlphaStr, featExtractor, ...
+        featCase, dataSet, recogCase );
     
     %% lauch Sphinxdecode
+    testSphinx( expDirPrefix, preemAlphaStr, featExtractor, ...
+        featCase, dataSet, recogCase );
     
     %% accumulate results
 end
