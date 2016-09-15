@@ -2,7 +2,9 @@ function logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, featCase, data
 %LOGSPHINXEXP Log the Sphinx experiment
 
 %% get time stamp
-timeString = datestr(datetime('now'));
+c = clock;
+fmtTime = sprintf('%02d:%02d:%02d', c(4), c(5), int32(c(6)));
+timeString = [date ' ' fmtTime];
 
 %% get configuration info
 cfgPath = fullfile(expDirPrefix, ['A' preemAlphaStr], featExtractor, featCase, dataSet,  ...
