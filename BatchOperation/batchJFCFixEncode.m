@@ -23,8 +23,8 @@ for expIdx = 1:length(P)
     %% construct parameter values
     testname = ['AN4' fs '_FP_RBS' rbs];
     inDirSuffix = '';
-    if strcmp('16', fs)
-        inDirSuffix = '_16';
+    if strcmp('8', fs)
+        inDirSuffix = '_8k';
     end
     inpathprefix = [wavDir inDirSuffix '//wav//'];
     
