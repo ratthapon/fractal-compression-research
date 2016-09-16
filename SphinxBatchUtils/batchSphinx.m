@@ -7,7 +7,7 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}, ];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-DATASET = [{'BASE'}, {'FCRBS2FS'}];
+DATASET = [{'BASE'}, {'FCRBS2FS'}, {'FCMATLABRBS2FS'}];
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
     FEATCASE, DATASET, RECOGCASE);
