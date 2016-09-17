@@ -53,7 +53,7 @@ end
 [ cfg ] = setSphinxCfg( cfg, 'CFG_FEATURE', ['"' featType '"']);
 [ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"none"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_CMN', '"current"' );
-[ cfg ] = setSphinxCfg( cfg, 'CFG_VARNORM', '"yes"' );
+[ cfg ] = setSphinxCfg( cfg, 'CFG_VARNORM', '"no"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_STATESPERHMM', '3' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_WAVFILES_DIR', ...
     ['"' normpath(fullfile(expDirPrefix, [ dataSet trainSuffix ], 'wav')) '"']);

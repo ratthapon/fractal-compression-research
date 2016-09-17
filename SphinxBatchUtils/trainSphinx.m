@@ -35,7 +35,7 @@ etcPath = fullfile(execDir, 'etc', 'sphinx_train.cfg');
 writeSphinxCfg(cfg, etcPath);
 
 %% launch a feature extraction
-system(cmdFileName,'-echo');
+system(cmdFileName);
 
 end
 
