@@ -18,7 +18,7 @@ for ids = 1:length(fileList)
     wav = AFCDecode(dat.f, inFs, outFs, 15);
     
     %% write output signal
-    wavPath = normpath(fullfile(outDir, [fileList{ids} '.' outExt]));
+    wavPath = normpath(fullfile(outDir, 'wav', [fileList{ids} '.' outExt]));
     rawwrite( wavPath , wav);
     
 end

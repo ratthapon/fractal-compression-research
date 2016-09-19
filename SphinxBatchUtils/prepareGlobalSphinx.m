@@ -63,29 +63,27 @@ inExt = 'mat';
 outExt = 'raw';
 batchMATLABDecode( fileList, inDir, outDir, inFs, outFs, inExt, outExt );
 
-% %% prepare reconstruct MRBS 16T16k signals using MATLAB decode
-% infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-% inDir = 'F:\IFEFSR\AudioFC\FC\TEST\AN416_FP_RBS';
-% outDir = fullfile(expDirectory, 'FCMATLABMRBS2T4FS1616');
-% RBS = [{'4'}, {'2'}];
-% inFs = 16000;
-% outFs = 16000;
-% inExt = 'mat';
-% outExt = 'raw';
-% batchMATLABMRBSDecode(  fileList(1:1), inDir, RBS, outDir, inFs, outFs, inExt, outExt  );
-% mrbssig = rawread('F:\IFEFSR\ExpSphinx\FCMATLABMRBS2T4FS1616\an4_clstk\fash\an251-fash-b.raw');
-% figure, plot(mrbssig)
-% 
-% %% prepare reconstruct MRBS 8T16k signals using MATLAB decode
-% infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-% inDir = 'F:\IFEFSR\AudioFC\FC\TEST\AN48_FP_RBS';
-% outDir = fullfile(expDirectory, 'FCMATLABMRBS2T4FS816');
-% RBS = [{'4'}, {'2'}];
-% inFs = 8000;
-% outFs = 16000;
-% inExt = 'mat';
-% outExt = 'raw';
-% batchMATLABMRBSDecode(  fileList, inDir, RBS, outDir, inFs, outFs, inExt, outExt  );
+%% prepare reconstruct MRBS 16T16k signals using MATLAB decode
+infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
+inDir = 'F:\IFEFSR\AudioFC\FC\AN416_FP_RBS';
+outDir = fullfile(expDirectory, 'FCMATLABMRBS2T4FS1616');
+RBS = [{'4'}, {'2'}];
+inFs = 16000;
+outFs = 16000;
+inExt = 'mat';
+outExt = 'raw';
+batchMATLABMRBSDecode(  fileList, inDir, RBS, outDir, inFs, outFs, inExt, outExt  );
+
+%% prepare reconstruct MRBS 8T16k signals using MATLAB decode
+infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
+inDir = 'F:\IFEFSR\AudioFC\FC\AN48_FP_RBS';
+outDir = fullfile(expDirectory, 'FCMATLABMRBS2T4FS816');
+RBS = [{'4'}, {'2'}];
+inFs = 8000;
+outFs = 16000;
+inExt = 'mat';
+outExt = 'raw';
+batchMATLABMRBSDecode(  fileList, inDir, RBS, outDir, inFs, outFs, inExt, outExt  );
 
 end
 
