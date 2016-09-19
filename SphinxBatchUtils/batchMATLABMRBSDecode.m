@@ -16,7 +16,7 @@ for ids = 1:length(fileList)
     for sIdx = 1:length(RBS)
         codePath = normpath(fullfile([inDir RBS{sIdx}], [fileList{ids} '.' inExt]));
         dat = load(codePath);
-        F{ids} = dat.f;
+        F{sIdx} = dat.f;
     end
     
     %% decode
