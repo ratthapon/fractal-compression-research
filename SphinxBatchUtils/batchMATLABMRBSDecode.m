@@ -16,14 +16,14 @@ for ids = 1:length(fileList)
     for sIdx = 1:length(RBS)
         codePath = normpath(fullfile([inDir RBS{sIdx}], [fileList{ids} '.' inExt]));
         dat = load(codePath);
-        F{ids} = dat.f;
+        F{sIdx} = dat.f;
     end
     
     %% decode
     [ wav ] = MultiScaleAFCDecoder(F, inFs, outFs, 15);
     
     %% write output signal
-    wavPath = normpath(fullfile(outDir, [fileList{ids} '.' outExt]));
+    wavPath = normpath(fullfile(outDir, 'wav', [fileList{ids} '.' outExt]));
     rawwrite( wavPath , wav);
     
 end
