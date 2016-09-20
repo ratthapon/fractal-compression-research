@@ -4,10 +4,10 @@ function batchSphinx()
 
 %% define sets of parameters
 EXP = [{'F:/IFEFSR/ExpSphinx'}];
-PREEMP = [{'95'}, ];
+PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-DATASET = [{'BASE'},{'FCRBS2FS'}, {'FCMATLABRBS2FS'}];
+DATASET = [{'FCRBS2LP9125N16FS'}];
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
     FEATCASE, DATASET, RECOGCASE);

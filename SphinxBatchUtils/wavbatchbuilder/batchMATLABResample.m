@@ -1,4 +1,4 @@
-function batchMATLABResample( fileList, inDir, outDir, inFs, outFs, inExt, outExt )
+function batchMATLABResample( fileList, inDir, outDir, inFs, outFs, inExt, outExt, lowpass )
 %BATCHMATLABRESAMPLE Batch resample raw files from inDir and write to outDir
 %   fileList - general file ids list exclude directory and extension
 %   inDir - input directory
