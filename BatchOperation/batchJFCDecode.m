@@ -4,7 +4,7 @@ function batchJFCDecode()
 %% define co-parameters
 outdir = 'F://IFEFSR//SpeechData//';
 infile = 'F://IFEFSR//ExpSphinx//an4traintest_small.txt';
-indir = 'F://IFEFSR//AudioFC//FC//TEST//';
+indir = 'F://IFEFSR//AudioFC//FC//MRBS//';
 inext = 'mat';
 outext = 'raw';
 
