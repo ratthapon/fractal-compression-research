@@ -92,20 +92,20 @@ batchMATLABMRBSDecode(  fileList, inDir, RBS, outDir, inFs, outFs, inExt, outExt
 %% MATLAB low pass filter
 %% apply low-pass filter to recon rbs 2 16->16
 infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-inDir = 'F:\IFEFSR\ExpSphinx\FCRBS2FS1616\wav';
-outDir = fullfile(expDirectory, 'FCRBS2LP9125N16FS1616');
+inDir = 'F:\IFEFSR\ExpSphinx\FCRBS4FS1616\wav';
+outDir = fullfile(expDirectory, 'FCRBS4LP6875N16FS1616');
 nFilt = 16;
-cutoff = 0.9125;
+cutoff = 0.6875;
 inExt = 'mat';
 outExt = 'raw';
 batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt );
 
 %% apply low-pass filter to recon rbs 2 8->16
 infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-inDir = 'F:\IFEFSR\ExpSphinx\FCRBS2FS816\wav';
-outDir = fullfile(expDirectory, 'FCRBS2LP9125N16FS816');
+inDir = 'F:\IFEFSR\ExpSphinx\FCRBS4FS816\wav';
+outDir = fullfile(expDirectory, 'FCRBS4LP6875N16FS816');
 nFilt = 16;
-cutoff = 0.9125;
+cutoff = 0.6875;
 inExt = 'mat';
 outExt = 'raw';
 batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt );

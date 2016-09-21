@@ -23,7 +23,7 @@ for i = 1:n
     
     % write output wave
     if strcmpi('raw', outExt)
-        filePath = normpath([outDir '/' fileList{i} '.raw']);
+        filePath = normpath([outDir '/wav/' fileList{i} '.raw']);
         rawwrite(filePath, outWave);
     end
 end
