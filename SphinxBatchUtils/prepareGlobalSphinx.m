@@ -27,8 +27,8 @@ batchMATLABResample( fileList, inDir, outDir, inFs, outFs, inExt, outExt )
 %% fix rbs 2
 %% prepare reconstruct 16T16k signals
 infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-inDir = 'F:\IFEFSR\AudioFC\FC\AN416_FP_RBS2';
-outDir = fullfile(expDirectory, 'FCRBS2FS1616');
+inDir = 'F:\IFEFSR\AudioFC\FC\AN416_FP_RBS4';
+outDir = fullfile(expDirectory, 'FCRBS4FS1616');
 inFs = 16000;
 outFs = 16000;
 inExt = 'mat';
@@ -37,8 +37,8 @@ batchJavaDecode( infile, inDir, outDir, inFs, outFs, inExt, outExt );
 
 %% prepare reconstruct 8T16k signals
 infile = 'F:\IFEFSR\ExpSphinx\an4traintest.txt';
-inDir = 'F:\IFEFSR\AudioFC\FC\AN48_FP_RBS2';
-outDir = fullfile(expDirectory, 'FCRBS2FS816');
+inDir = 'F:\IFEFSR\AudioFC\FC\AN48_FP_RBS4';
+outDir = fullfile(expDirectory, 'FCRBS4FS816');
 inFs = 8000;
 outFs = 16000;
 inExt = 'mat';
@@ -96,7 +96,7 @@ inDir = 'F:\IFEFSR\ExpSphinx\FCRBS4FS1616\wav';
 outDir = fullfile(expDirectory, 'FCRBS4LP6875N16FS1616');
 nFilt = 16;
 cutoff = 0.6875;
-inExt = 'mat';
+inExt = 'raw';
 outExt = 'raw';
 batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt );
 
@@ -106,7 +106,7 @@ inDir = 'F:\IFEFSR\ExpSphinx\FCRBS4FS816\wav';
 outDir = fullfile(expDirectory, 'FCRBS4LP6875N16FS816');
 nFilt = 16;
 cutoff = 0.6875;
-inExt = 'mat';
+inExt = 'raw';
 outExt = 'raw';
 batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt );
 
