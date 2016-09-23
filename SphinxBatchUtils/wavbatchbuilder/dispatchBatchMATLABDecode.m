@@ -23,6 +23,6 @@ for pIdx = 1:length(P)
     inFs = fs * 1000;
     inDir = ['F:\IFEFSR\AudioFC\FC\AN4' num2str(fs) '_FP_RBS' rbs];
     outDir = fullfile(expDirectory, [ dataSet rbs 'FS' num2str(fs) '16']);
-    batchMATLABMRBSDecode(  fileList, inDir, rbs, outDir, inFs, outFs, inExt, outExt  );
+    batchMATLABDecode(  fileList, inDir, outDir, inFs, outFs, inExt, outExt  );
     
 end

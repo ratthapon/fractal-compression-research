@@ -7,18 +7,25 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-% DATASET = [ {'FCRBS2FS'}, {'FCRBS2LP6875N16FS'}, {'FCRBS2LP9125N16FS'}, ...
-%     {'FCRBS4FS'}, {'FCRBS4LP6875N16FS'}, {'FCRBS4LP9125N16FS'}];
-DATASET = [ {'FCMATLABRBS2FS'}, {'FCMATLABRBS2LP6250N16FS'}, {'FCMATLABRBS2LP6875N16FS'}, {'FCMATLABRBS2LP9125N16FS'}, ...
-    {'FCMATLABRBS4FS'}, {'FCMATLABRBS2LP6250N16FS'}, {'FCMATLABRBS4LP6875N16FS'}, {'FCMATLABRBS4LP9125N16FS'}];
-% DATASET = [ {'FCMATLABMRBS2T4FS'}, {'FCMATLABMRBS2T4LP6250N16FS'}, ...
-%     {'FCMATLABMRBS2T4LP6875N16FS'}, {'FCMATLABMRBS2T4LP9125N16FS'},];
+
+% build dataSet matrix
+PREFIX = [{'FCRBS2'}, {'FCRBS4'}, {'FCMATLABRBS2'}, {'FCMATLABRBS4'}, ...
+    {'FCMATLABMRBS2T4'}];
+CUTOFF = [{''}, {'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
+    {'LP8750'}, {'LP9125'}, {'LP9375'}];
+DATASET_CHK = buildParamsMatrix(PREFIX, CUTOFF);
+DATASET = cell(size(DATASET_CHK, 1), 1);
+for setIdx = 1:size(DATASET_CHK, 1)
+    DATASET{setIdx} = [DATASET_CHK{setIdx, 1} DATASET_CHK{setIdx, 2}];
+end
+DATASET = [{'BASE'}; DATASET];
+
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
     FEATCASE, DATASET, RECOGCASE);
 
 %% iterate for each parameters combination
-for expIdx = 1:size(P, 1);
+for expIdx = 1:size(P, 1)
     expDirPrefix = P{expIdx, 1};
     preemAlphaStr = P{expIdx, 2};
     featExtractor = P{expIdx, 3};
