@@ -1,4 +1,4 @@
-function dispatchBatchMATLABMRBSDecode( )
+function dispatchBatchMATLABMRBSDecode()
 %DISPATCHBATCHMRBSDECODE MATLAB decode batch dispatcher
 
 % fixed paramters

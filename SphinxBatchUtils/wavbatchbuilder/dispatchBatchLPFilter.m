@@ -6,9 +6,12 @@ fileList = importdata( fullfile(expDirectory, 'an4traintest.txt') );
 inExt = 'raw';
 outExt = 'raw';
 
-DATASET = [{'FCRBS'}];
-RBS = [{'2'}, {'4'}];
-CUTOFF = [{0.6875}, {0.9125}];
+DATASET = [{'FCMATLABMRBS2T4'}, {'FCMATLABRBS2'}, {'FCMATLABRBS4'}, ...
+    {'FCRBS2'}, {'FCRBS4'}];
+RBS = [{''}];
+% RBS = [{'2'}, {'4'}];
+% CUTOFF = [{0.625}];
+CUTOFF = [{0.625}, {0.6875}, {0.75}, {0.8125}, {0.875}, {0.9125}, {0.9375}];
 NFILT = [{16}];
 FS = [{'8'}, {'16'}];
 
