@@ -11,14 +11,18 @@ FEATCASE = [{'caseA'}, {'caseB'}];
 % build dataSet matrix
 PREFIX = [{'FCRBS2'}, {'FCRBS4'}, {'FCMATLABRBS2'}, {'FCMATLABRBS4'}, ...
     {'FCMATLABMRBS2T4'}];
-CUTOFF = [{''}, {'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
+CUTOFF = [{'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
     {'LP8750'}, {'LP9125'}, {'LP9375'}];
 DATASET_CHK = buildParamsMatrix(PREFIX, CUTOFF);
 DATASET = cell(size(DATASET_CHK, 1), 1);
 for setIdx = 1:size(DATASET_CHK, 1)
-    DATASET{setIdx} = [DATASET_CHK{setIdx, 1} DATASET_CHK{setIdx, 2}];
+    DATASET{setIdx} = [DATASET_CHK{setIdx, 1} DATASET_CHK{setIdx, 2} 'N16FS'];
 end
-DATASET = [{'BASE'}; DATASET];
+DATASET_NO_CUTOFF = cell(size(PREFIX, 1), 1);
+for setIdx = 1:size(PREFIX, 1)
+    DATASET_NO_CUTOFF{setIdx} = [PREFIX{setIdx, 1} 'FS'];
+end
+DATASET = [DATASET_NO_CUTOFF; DATASET; {'BASE'}];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
