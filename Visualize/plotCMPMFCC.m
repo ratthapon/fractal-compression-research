@@ -6,7 +6,7 @@ function plotCMPMFCC( fig, varargin )
 % varargin{i + 1} - title
 
 figure(fig),
-set(fig, 'Position', [100, 100, 700, 300]);
+set(fig, 'Position', [100, 100, 500, 300]);
 nSubplot = (nargin - 1)/2;
 for fIdx = 1:nSubplot
     featData = varargin{(fIdx - 1)*2 + 1};
