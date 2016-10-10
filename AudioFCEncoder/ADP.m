@@ -11,12 +11,13 @@ minRBS = C(1);
 maxRBS = C(end);
 
 M = size(X,2);
-p = maxRBS * ones(1, floor(M/maxRBS));
+p = maxRBS * ones(1, floor(M/maxRBS)); % parts
+cp = zeros(1, floor(M/maxRBS)); % completed parts
 N = length(p);
 
 %% define expression
 % check if input has variance greater than thresh t
-isHighVar = @(X, t) var(X) > t ;
+isHighVar = @(X, t) var(X/(2^15)) > t ;
 isLarger = @(p, c) p > c ;
 isNotMin = @(p) p > minRBS ;
 isLargerThanMax = @(p) p > maxRBS ;
@@ -31,25 +32,38 @@ for c = C(end-1:-1:1)
     k = 1;
     while k < N 
         if location + p(k) - 1 > M
+            endIdx = location + p(k) - 1 
             break;
         end
         x_k = X(location : location + p(k) - 1);
         location = location + p(k) - 1;
         
+        prev = sum(p);
         % check if need to partition
-        if isSplitable(x_k, t, p(k), c)
+        if isSplitable(x_k, t, p(k), c) && cp(k) == false
             % increase part
             N = N + 1;
             % shift parts
-            for i = k+1:N
+            for i = N:-1:k+2
                 p(i) = p(i-1);
+                cp(i) = cp(i-1);
             end
             
             % assign new partition
             p(k) = c;
             p(k+1) = c;
+            cp(k) = false;
+            cp(k+1) = false;
+            if sum(p) ~= prev
+                c
+                sum(p)
+            end
+            k = k + 2;
+        else
+            cp(k) = true;
+            k = k + 1;
         end
-        k = k + 1;
     end
+%     op = [p;cp];
 end
 
