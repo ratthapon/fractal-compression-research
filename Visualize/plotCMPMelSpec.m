@@ -1,5 +1,5 @@
-function plotCMPSpec(fig, varargin )
-%PLOTCMPSPECTRUM Plot the spectrum, multiple spectrum can plot
+function plotCMPMelSpec( fig, varargin )
+%PLOTCMPMELSPEC Plot the mel spectrum, multiple mel spectrum can plot
 %simultaneousely.
 % fig - output figure number
 % varargin{i} - spectrum data
@@ -18,13 +18,13 @@ for fIdx = 1:nSubplot
     %% set the figure's title and axes name
     title(specName);
     xlabel('Time (ms)');
-    ylabel('Frequency (kHz)');
+    ylabel('Mel frequency index');
     
     %% set the axis tick information
     ax = gca;
     set(ax, 'XTickLabel', [1:6]*320);
-    set(ax, 'YTick', [32:32:256]);
-    set(ax, 'YTickLabel', [1:8]);
+    set(ax, 'YTick', [1:2:30]);
+    set(ax, 'YTickLabel', [1:2:30]);
     
     colormap(gray);
 end
