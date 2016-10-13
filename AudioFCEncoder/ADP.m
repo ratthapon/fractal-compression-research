@@ -10,9 +10,9 @@ t = thresh;
 minRBS = C(1);
 maxRBS = C(end);
 
-M = size(X,2);
-p = maxRBS * ones(1, floor(M/maxRBS)); % parts
-cp = zeros(1, floor(M/maxRBS)); % completed parts
+L = size(X,2);
+p = maxRBS * ones(1, floor(L/maxRBS)); % parts
+cp = zeros(1, floor(L/maxRBS)); % completed parts
 N = length(p);
 
 %% define expression
@@ -26,23 +26,21 @@ isSplitable = @(X, t, p, c) (isHighVar(X, t) && isLarger(p, c) && isNotMin(p)) .
 
 %% for each chunk size
 for c = C(end-1:-1:1)
-    R = M; % residual
     location = 1;
     % for each partition k
     k = 1;
     while k < N 
-        if location + p(k) - 1 > M
-            endIdx = location + p(k) - 1 
+        if location + p(k) - 1 > L
             break;
         end
         x_k = X(location : location + p(k) - 1);
         location = location + p(k) - 1;
         
-        prev = sum(p);
         % check if need to partition
         if isSplitable(x_k, t, p(k), c) && cp(k) == false
             % increase part
             N = N + 1;
+            
             % shift parts
             for i = N:-1:k+2
                 p(i) = p(i-1);
@@ -54,16 +52,11 @@ for c = C(end-1:-1:1)
             p(k+1) = c;
             cp(k) = false;
             cp(k+1) = false;
-            if sum(p) ~= prev
-                c
-                sum(p)
-            end
             k = k + 2;
         else
             cp(k) = true;
             k = k + 1;
         end
     end
-%     op = [p;cp];
 end
 
