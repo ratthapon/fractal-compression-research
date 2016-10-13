@@ -1,8 +1,8 @@
-function batchMATLABResample( fileList, inDir, outDir, inFs, outFs, inExt, outExt )
+function batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt )
 %BATCHMATLABRESAMPLE Batch resample raw files from inDir and write to outDir
 %   fileList - general file ids list exclude directory and extension
 %   inDir - input directory
-%   outDir - output directory 
+%   outDir - output directory
 %   inFs - input sampling rate
 %   outFs - output sampling rate
 %   inExt - nput extension
@@ -17,12 +17,13 @@ for i = 1:n
         inWave = rawread(filePath);
     end
     
-    % resample
-    outWave = resample(inWave, outFs, inFs);
+    % apply filter
+    mask = fir1( nFilt, cutoff);
+    outWave = filtfilt(mask, 1, inWave);
     
     % write output wave
     if strcmpi('raw', outExt)
-        filePath = normpath([outDir '/' fileList{i} '.raw']);
+        filePath = normpath([outDir '/wav/' fileList{i} '.raw']);
         rawwrite(filePath, outWave);
     end
 end
