@@ -1,4 +1,5 @@
-function initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, featCase, dataSet, recogCase )
+function initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, ...
+    featCase, dataSet, recogCase, notes)
 %INITSPHINXWS Init the Sphinx experiment directory
 %   Detailed explanation goes here
 
@@ -44,6 +45,10 @@ else
     testSuffix = [ testSuffix '16' ];
 end
 
+% insert notes space
+interpNotes(1:2:(length(notes)*2)) = notes(1:length(notes));
+interpNotes(2:2:(length(notes)*2)) = {' '};
+
 %% config exp
 [ cfg ] = parseSphinxCfg( fullfile(expDirPrefix, 'sphinx_train.cfg') ); % read global config
 [ cfg ] = setSphinxCfg( cfg, 'CFG_BASE_DIR', ['"' normpath(outDir) '"']);
@@ -60,6 +65,7 @@ end
 [ cfg ] = setSphinxCfg( cfg, 'CFG_TEST_WAVFILES_DIR', ...
     ['"' normpath(fullfile(expDirPrefix, [ dataSet testSuffix ], 'wav')) '"']);
 
+[ cfg ] = setSphinxCfg( cfg, 'CFG_NOTE', ['"' cell2mat(interpNotes) '"'] );
 writeSphinxCfg(cfg, fullfile(etcPath, 'sphinx_train.cfg'));
 
 end

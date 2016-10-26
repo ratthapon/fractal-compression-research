@@ -7,22 +7,29 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
+NOTES = [{'diag covariance'}];
 
-% build dataSet matrix
-PREFIX = [{'FCRBS2'}, {'FCRBS4'}, {'FCMATLABRBS2'}, {'FCMATLABRBS4'}, ...
-    {'FCMATLABMRBS2T4'}];
-CUTOFF = [{'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
-    {'LP8750'}, {'LP9125'}, {'LP9375'}];
-DATASET_CHK = buildParamsMatrix(PREFIX, CUTOFF);
-DATASET = cell(size(DATASET_CHK, 1), 1);
-for setIdx = 1:size(DATASET_CHK, 1)
-    DATASET{setIdx} = [DATASET_CHK{setIdx, 1} DATASET_CHK{setIdx, 2} 'N16FS'];
-end
+%% build dataSet matrix
+PREFIX = [{'FCMATLABRBS4'}];
+DATASET_WITH_CUTOFF = [];
+DATASET_NO_CUTOFF = [];
+
+% % build cutoff dataset
+% CUTOFF = [{'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
+%     {'LP8750'}, {'LP9125'}, {'LP9375'}];
+% CUTOFF_P = buildParamsMatrix(PREFIX, CUTOFF);
+% DATASET_WITH_CUTOFF = cell(size(CUTOFF_P, 1), 1);
+% for setIdx = 1:size(CUTOFF_P, 1)
+%     DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} CUTOFF_P{setIdx, 2} 'N16FS'];
+% end
+
+% build no cutoff dataset
 DATASET_NO_CUTOFF = cell(size(PREFIX, 1), 1);
 for setIdx = 1:size(PREFIX, 1)
     DATASET_NO_CUTOFF{setIdx} = [PREFIX{setIdx, 1} 'FS'];
 end
-DATASET = [DATASET_NO_CUTOFF; DATASET; {'BASE'}];
+
+DATASET = [DATASET_NO_CUTOFF; DATASET_WITH_CUTOFF];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
@@ -38,7 +45,7 @@ for expIdx = 1:size(P, 1)
     recogCase = P{expIdx, 6};
     %% initial each workspace
     initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, ...
-        featCase, dataSet, recogCase );
+        featCase, dataSet, recogCase, NOTES );
     
     %% launch feature extraction
     extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
@@ -54,7 +61,7 @@ for expIdx = 1:size(P, 1)
     
     %% accumulate results
     logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, ...
-        featCase, dataSet, recogCase )
+        featCase, dataSet, recogCase, NOTES )
     
 end
 
