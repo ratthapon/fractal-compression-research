@@ -1,5 +1,4 @@
-function [ CC, FBE, OUTMAG, MAG, H, DCT] = ...
-    mfcc2( speech, fs)
+function [ CC, FBE, OUTMAG, MAG, H, DCT] = mfcc2( speech, fs)
 % MFCC Mel frequency cepstral coefficient feature extraction.
 %
 %   MFCC(S,FS,TW,TS,ALPHA,WINDOW,R,M,N,L) returns mel frequency 
@@ -116,10 +115,9 @@ function [ CC, FBE, OUTMAG, MAG, H, DCT] = ...
     %% PRELIMINARIES 
 
     [ Tw, Ts, alpha, M, N, L, LF, HF ] = getMFCCSphinxParams();
-    window = @hamming;
     
     % Ensure correct number of inputs
-    if( nargin~= 10 ), help mfcc; return; end; 
+    if( nargin~= 2 ), help mfcc; return; end; 
 
     % Explode samples to the range of 16 bit shorts
     if( max(abs(speech))<=1 ), speech = speech * 2^15; end;
@@ -152,7 +150,7 @@ function [ CC, FBE, OUTMAG, MAG, H, DCT] = ...
     speech = filter( [1 -alpha], 1, speech ); % fvtool( [1 -alpha], 1 );
 
     % Framing and windowing (frames as columns)
-    frames = vec2frames( speech, Nw, Ns, 'cols', window, false );
+    frames = vec2frames( speech, Nw, Ns, 'cols', @hamming, false );
 
     % Magnitude spectrum computation (as column vectors)
     MAG = abs( fft(frames,nfft,1) ); 
