@@ -15,6 +15,7 @@ if cfgLineIndex ~= -1
     cfgValue = regexprep(cfgValue(end), ' ', '');
     cfgValue = regexprep(cfgValue, ';', '');
     cfgValue = regexprep(cfgValue, '"', '');
+    cfgValue = regexprep(cfgValue, char(39), '');
 else
     ['No parameter ' cfgName ' exists.']
 end
