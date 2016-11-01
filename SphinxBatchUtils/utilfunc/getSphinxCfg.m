@@ -12,8 +12,9 @@ for i = 1:size(cfg, 1)
 end
 if cfgLineIndex ~= -1
     cfgValue = regexp(cfg{cfgLineIndex}, ' = ', 'split');
-    cfgValue = regexprep(cfgValue, ' ', '');
+    cfgValue = regexprep(cfgValue(end), ' ', '');
     cfgValue = regexprep(cfgValue, ';', '');
+    cfgValue = regexprep(cfgValue, '"', '');
 else
     ['No parameter ' cfgName ' exists.']
 end
