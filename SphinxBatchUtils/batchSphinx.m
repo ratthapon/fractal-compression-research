@@ -7,7 +7,15 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-NOTES = [{'diag covariance'}];
+NOTES = [{'lifter 8'}, {'30 Mel Ch.'} , {'Varry MelHiFilt'}];
+HIFILT = {[{'CFG_HI_FILT'}, {'4000'}]; ...
+    [{'CFG_HI_FILT'}, {'4500'}]; ...
+    [{'CFG_HI_FILT'}, {'5000'}]; ...
+    [{'CFG_HI_FILT'}, {'5500'}]; ...
+    [{'CFG_HI_FILT'}, {'6000'}]; ...
+    [{'CFG_HI_FILT'}, {'6500'}]; ...
+    [{'CFG_HI_FILT'}, {'7000'}]; ...
+    };
 
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4'}];
@@ -33,7 +41,7 @@ DATASET = [DATASET_NO_CUTOFF; DATASET_WITH_CUTOFF];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
-    FEATCASE, DATASET, RECOGCASE);
+    FEATCASE, DATASET, RECOGCASE, HIFILT);
 
 %% iterate for each parameters combination
 for expIdx = 1:size(P, 1)
@@ -43,11 +51,15 @@ for expIdx = 1:size(P, 1)
     featCase = P{expIdx, 4};
     dataSet = P{expIdx, 5};
     recogCase = P{expIdx, 6};
+    parameters = P{expIdx, 7};
+    
     %% initial each workspace
     initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, ...
-        featCase, dataSet, recogCase, NOTES );
+        featCase, dataSet, recogCase, parameters, NOTES );
     
     %% launch feature extraction
+%     batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
+%         featCase, dataSet, recogCase );
     extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
         featCase, dataSet, recogCase );
     

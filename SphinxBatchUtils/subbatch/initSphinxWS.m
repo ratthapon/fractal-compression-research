@@ -1,5 +1,5 @@
 function initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, ...
-    featCase, dataSet, recogCase, notes)
+    featCase, dataSet, recogCase, parameters, notes)
 %INITSPHINXWS Init the Sphinx experiment directory
 %   Detailed explanation goes here
 
@@ -56,7 +56,7 @@ interpNotes(2:2:(length(notes)*2)) = {' '};
 [ cfg ] = setSphinxCfg( cfg, 'CFG_HI_FILT', num2str( HF ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VECTOR_LENGTH', num2str( C ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_FEATURE', ['"' featType '"']);
-[ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"none"' );
+[ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"max"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_CMN', '"current"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VARNORM', '"yes"' );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_STATESPERHMM', '3' );
@@ -66,6 +66,13 @@ interpNotes(2:2:(length(notes)*2)) = {' '};
     ['"' normpath(fullfile(expDirPrefix, [ dataSet testSuffix ], 'wav')) '"']);
 
 [ cfg ] = setSphinxCfg( cfg, 'CFG_NOTE', ['"' cell2mat(interpNotes) '"'] );
+
+%% set injection params
+for i = 1: size(parameters, 1)
+    [ cfg ] = setSphinxCfg( cfg, parameters{1}, parameters{2} );
+end
+
+%% write the config file
 writeSphinxCfg(cfg, fullfile(etcPath, 'sphinx_train.cfg'));
 
 end
