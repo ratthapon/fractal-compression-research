@@ -115,6 +115,7 @@ function [ CC, FBE, OUTMAG, MAG, H, DCT] = mfcc2( speech, fs)
     %% PRELIMINARIES 
 
     [ Tw, Ts, alpha, M, N, L, LF, HF ] = getMFCCSphinxParams();
+    N = N + 1;
     
     % Ensure correct number of inputs
     if( nargin~= 2 ), help mfcc; return; end; 
