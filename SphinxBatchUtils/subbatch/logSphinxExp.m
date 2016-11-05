@@ -1,5 +1,5 @@
 function logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, ...
-    featCase, dataSet, recogCase, notes)
+    featCase, dataSet, recogCase, parameters, notes)
 %LOGSPHINXEXP Log the Sphinx experiment
 
 %% get time stamp
@@ -39,6 +39,12 @@ expRecord = [{timeString}, {preemAlphaStr}, {featExtractor}, {featCase}, ...
 fid = fopen(fullfile(expDirPrefix, 'expsummary.csv'), 'a') ;
 fprintf(fid, '%s,', expRecord{1,1:end}) ;
 fprintf(fid, '%s,', notes{1,1:end}) ;
+
+% write parameters to log
+for i = 1:size(parameters, 1)
+    fprintf(fid, '%s,', sprintf('%s %s', parameters{:})) ;
+end
+
 fprintf(fid, '\n') ;
 fclose(fid) ;
 end

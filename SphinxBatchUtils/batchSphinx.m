@@ -73,7 +73,7 @@ for expIdx = 1:size(P, 1)
     
     %% accumulate results
     logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, ...
-        featCase, dataSet, recogCase, NOTES )
+        featCase, dataSet, recogCase, parameters, NOTES )
     
 end
 
