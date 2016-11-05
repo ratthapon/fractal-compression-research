@@ -1,4 +1,5 @@
-function logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, featCase, dataSet, recogCase )
+function logSphinxExp(expDirPrefix, preemAlphaStr, featExtractor, ...
+    featCase, dataSet, recogCase, parameters, notes)
 %LOGSPHINXEXP Log the Sphinx experiment
 
 %% get time stamp
@@ -26,6 +27,8 @@ data.expSummary = [data.expSummary; expInfo];
 expSummary = data.expSummary;
 save( fullfile(expDirPrefix, 'expsummary.mat'), ...
     'expSummary');
+save( fullfile(expDirPrefix, 'ExpSummaries', [regexprep(timeString, '[: ]', '-') '.mat']), ...
+    'expInfo');
 
 % write to xls file
 expRecord = [{timeString}, {preemAlphaStr}, {featExtractor}, {featCase}, ...
@@ -34,8 +37,15 @@ expRecord = [{timeString}, {preemAlphaStr}, {featExtractor}, {featCase}, ...
     {num2str(1 - double(nCorrectWord)/double(nWord))}];
 
 fid = fopen(fullfile(expDirPrefix, 'expsummary.csv'), 'a') ;
-fprintf(fid, '%s,', expRecord{1,1:end-1}) ;
-fprintf(fid, '%s\n', expRecord{1,end}) ;
+fprintf(fid, '%s,', expRecord{1,1:end}) ;
+fprintf(fid, '%s,', notes{1,1:end}) ;
+
+% write parameters to log
+for i = 1:size(parameters, 1)
+    fprintf(fid, '%s,', sprintf('%s %s', parameters{:})) ;
+end
+
+fprintf(fid, '\n') ;
 fclose(fid) ;
 end
 
