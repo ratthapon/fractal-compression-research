@@ -35,7 +35,7 @@ for fIdx = 1:size(f,1)
         % refer domain block corresponding to domain number
         dnIdx = dIdx_p + w * sumScale;
         if cenAlign
-            dnIdx = dIdx_p + w/2 * (1 - dnScale);
+            dnIdx = dIdx_p + w/2 * (2 - dnScale);
         end
         
         for ds = 0:dnScale-1
