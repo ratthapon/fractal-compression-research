@@ -21,14 +21,18 @@ for fIdx = 1:size(f,1)
     d_p = zeros( nCoeff, w);
     d_p( 1, :) = 1;
     for dn = 1:nD
-        % locate input poiter
+        % scale domain index
         dIdx_p = round((dIdx - 1)*alpha + 1);
+        
+        % compute scale and sum of previous scales of domain dn
         sumScale = 0;
         dnScale = dScale ^ (h * (dn - 1) + 1);
         for k = 1:(dn - 1)
             dnScale = dScale ^ (h * (k - 1) + 1);
             sumScale = sumScale + dnScale;
         end
+        
+        % refer domain block corresponding to domain number
         dnIdx = dIdx_p + w * sumScale;
         if cenAlign
             dnIdx = dIdx_p + w/2 * (1 - dnScale);
@@ -37,13 +41,16 @@ for fIdx = 1:size(f,1)
         for ds = 0:dnScale-1
             for i = 1:w
                 datIdx = dnIdx + ds + (i-1)*dnScale;
-                revDatIdx = dnIdx + ((w*dnScale) - (ds + (i-1)*dnScale) - 1);
-                if datIdx <= size(Yp, 2) && datIdx > 0 && revDatIdx <= size(Yp, 2) && revDatIdx > 0
-                    if ~reverse
-                        d_p(dn + 1, i) = d_p(dn + 1, i) + Y(1, datIdx);
-                    else
-                        d_p(dn + 1, i) = d_p(dn + 1, i) + Y(1, revDatIdx);
-                    end
+                
+                % change index if domain is reversed
+                if reverse
+                    datIdx = dnIdx + ((w*dnScale) - (ds + (i-1)*dnScale) - 1);
+                end
+                
+                % check if not overflow, then add sample value
+                isOverflow = datIdx > size(Yp, 2) || datIdx <= 0;
+                if ~isOverflow
+                    d_p(dn + 1, i) = d_p(dn + 1, i) + Y(1, datIdx);
                 end
             end
         end
