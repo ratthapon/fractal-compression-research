@@ -8,7 +8,7 @@ function [wav] = MDDecode(f, FsIn, FsOut, dScale, rScale, expansion, cenAlign, i
 alpha = FsOut/FsIn;
 
 %% check initial reconstruction signal
-Y = zeros(1,sum(f(:,end-1)*alpha));
+Y = zeros(1,sum(f(:,end-1)*alpha*rScale));
 
 %% specify maxiterration of reconstruction
 maxIter = 15;

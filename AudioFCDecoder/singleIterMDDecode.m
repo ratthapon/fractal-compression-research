@@ -15,7 +15,7 @@ for fIdx = 1:size(f,1)
     dIdx = abs(f(fIdx, nCoeff + 1));
     reverse = f(fIdx, nCoeff + 1) < 0;
     
-    w = ceil(f(fIdx, nCoeff + 2) * alpha); % scaling decode buffer to
+    w = ceil(f(fIdx, nCoeff + 2) * alpha * rScale); % scaling decode buffer to
     
     % create buffer for reconstruction
     d_p = zeros( nCoeff, w);
@@ -35,7 +35,7 @@ for fIdx = 1:size(f,1)
         % refer domain block corresponding to domain number
         dnIdx = dIdx_p + w * sumScale;
         if cenAlign
-            dnIdx = dIdx_p + w/2 * (2 - dnScale);
+            dnIdx = dIdx_p + w/2 * (1 - dnScale) + alpha;
         end
         
         for ds = 0:dnScale-1
