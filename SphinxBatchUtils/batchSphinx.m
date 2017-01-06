@@ -7,7 +7,7 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-NOTES = [{'lifter 8'}, {'30 Mel Ch.'} , {'Varry MelHiFilt'}];
+NOTES = [{'lifter 22'}, {'30 Mel Ch.'} , {'Varry MelHiFilt'}];
 HIFILT = {[{'CFG_HI_FILT'}, {'4000'}]; ...
     [{'CFG_HI_FILT'}, {'4500'}]; ...
     [{'CFG_HI_FILT'}, {'5000'}]; ...
@@ -18,23 +18,22 @@ HIFILT = {[{'CFG_HI_FILT'}, {'4000'}]; ...
     };
 
 %% build dataSet matrix
-PREFIX = [{'FCMATLABRBS4'}];
+PREFIX = [{'BASE'}];
 DATASET_WITH_CUTOFF = [];
 DATASET_NO_CUTOFF = [];
 
 % % build cutoff dataset
-% CUTOFF = [{'LP6250'}, {'LP6875'}, {'LP7500'}, {'LP8125'}, ...
-%     {'LP8750'}, {'LP9125'}, {'LP9375'}];
-% CUTOFF_P = buildParamsMatrix(PREFIX, CUTOFF);
-% DATASET_WITH_CUTOFF = cell(size(CUTOFF_P, 1), 1);
-% for setIdx = 1:size(CUTOFF_P, 1)
-%     DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} CUTOFF_P{setIdx, 2} 'N16FS'];
-% end
+CUTOFF = num2cell((4000:500:7500));
+CUTOFF_P = buildParamsMatrix(PREFIX, CUTOFF);
+DATASET_WITH_CUTOFF = cell(size(CUTOFF_P, 1), 1);
+for setIdx = 1:size(CUTOFF_P, 1)
+    DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} CUTOFF_P{setIdx, 2} 'N32FS'];
+end
 
 % build no cutoff dataset
 DATASET_NO_CUTOFF = cell(size(PREFIX, 1), 1);
 for setIdx = 1:size(PREFIX, 1)
-    DATASET_NO_CUTOFF{setIdx} = [PREFIX{setIdx, 1} 'FS'];
+    DATASET_NO_CUTOFF{setIdx} = [PREFIX{setIdx, 1} ''];
 end
 
 DATASET = [DATASET_NO_CUTOFF; DATASET_WITH_CUTOFF];
@@ -51,7 +50,8 @@ for expIdx = 1:size(P, 1)
     featCase = P{expIdx, 4};
     dataSet = P{expIdx, 5};
     recogCase = P{expIdx, 6};
-    parameters = P{expIdx, 7};
+%     parameters = P{expIdx, 7};
+    parameters = [];
     
     %% initial each workspace
     initSphinxWS(expDirPrefix, preemAlphaStr, featExtractor, ...
