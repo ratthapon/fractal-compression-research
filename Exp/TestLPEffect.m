@@ -11,7 +11,7 @@ DATASET = [{'BASE'}];
 % CUTOFF = [{0.625}];
 CUTOFF = num2cell((4000:500:7500) / 8000);
 NFILT = [{16}, {32}];
-FS = [{8}];
+FS = [{8}, {16}];
 
 P = buildParamsMatrix( DATASET, CUTOFF, NFILT, FS );
 for pIdx = 1:size(P, 1)
