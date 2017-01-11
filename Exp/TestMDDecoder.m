@@ -12,7 +12,7 @@ rScale = 1;
 expansion = 1;
 cenAlign = true;
 [wav] = MDDecode(f, FsIn, FsOut, dScale, rScale, expansion, cenAlign, inIter);
-mask = fir1( 32, 55/80);
+mask = fir1( 16, 55/80);
 wav = filtfilt(mask, 1, wav);
 figure(5), plot(wav);
 [ CC, FBE, OUTMAG, MAG, H, DCT] = mfcc2( wav, 16000);

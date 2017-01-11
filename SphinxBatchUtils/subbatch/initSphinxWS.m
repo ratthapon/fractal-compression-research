@@ -30,6 +30,8 @@ end
 % config input wave directory
 trainSuffix = '';
 testSuffix = '';
+trainFs = 16000;
+testFs = 16000;
 if strcmpi(recogCase, 'origin') 
     trainSuffix = '16';
     testSuffix = '16';
@@ -38,8 +40,14 @@ elseif strcmpi(recogCase, 'cross')
     testSuffix = '8';
 end
 
-if strcmpi(dataSet, 'base') 
-
+if length(regexpi(dataSet, 'base')) > 0
+    if strcmpi(recogCase, 'origin') 
+        trainFs = 16000;
+        testFs = 16000;
+    elseif strcmpi(recogCase, 'cross') 
+        trainFs = 16000;
+        testFs = 8000;
+    end
 else
     trainSuffix = [ trainSuffix '16' ];
     testSuffix = [ testSuffix '16' ];
@@ -54,6 +62,8 @@ interpNotes(2:2:(length(notes)*2)) = {' '};
 [ cfg ] = setSphinxCfg( cfg, 'CFG_BASE_DIR', ['"' normpath(outDir) '"']);
 [ cfg ] = setSphinxCfg( cfg, 'CFG_NUM_FILT', num2str( M ));
 [ cfg ] = setSphinxCfg( cfg, 'CFG_HI_FILT', num2str( HF ) );
+[ cfg ] = setSphinxCfg( cfg, 'CFG_WAVFILE_SRATE', num2str( trainFs ) );
+[ cfg ] = setSphinxCfg( cfg, 'T_CFG_WAVFILE_SRATE', num2str( testFs ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_VECTOR_LENGTH', num2str( C ) );
 [ cfg ] = setSphinxCfg( cfg, 'CFG_FEATURE', ['"' featType '"']);
 [ cfg ] = setSphinxCfg( cfg, 'CFG_AGC', '"max"' );

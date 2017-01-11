@@ -7,7 +7,7 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'95'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}, ];
 FEATCASE = [{'caseA'}, {'caseB'}];
-NOTES = [{'lifter 22'}, {'30 Mel Ch.'} , {'Varry MelHiFilt'}];
+NOTES = [{'lifter 22'}, {'30 Mel Ch.'} , {'Varry LP'}];
 HIFILT = {[{'CFG_HI_FILT'}, {'4000'}]; ...
     [{'CFG_HI_FILT'}, {'4500'}]; ...
     [{'CFG_HI_FILT'}, {'5000'}]; ...
@@ -27,7 +27,7 @@ CUTOFF = num2cell((4000:500:7500));
 CUTOFF_P = buildParamsMatrix(PREFIX, CUTOFF);
 DATASET_WITH_CUTOFF = cell(size(CUTOFF_P, 1), 1);
 for setIdx = 1:size(CUTOFF_P, 1)
-    DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} CUTOFF_P{setIdx, 2} 'N32FS'];
+    DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} 'LP' num2str(CUTOFF_P{setIdx, 2}) 'N16FS'];
 end
 
 % build no cutoff dataset
@@ -40,7 +40,7 @@ DATASET = [DATASET_NO_CUTOFF; DATASET_WITH_CUTOFF];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
-    FEATCASE, DATASET, RECOGCASE, HIFILT);
+    FEATCASE, DATASET, RECOGCASE);
 
 %% iterate for each parameters combination
 for expIdx = 1:size(P, 1)

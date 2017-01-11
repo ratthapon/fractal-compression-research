@@ -23,9 +23,9 @@ for pIdx = 1:size(P, 1)
     %% MATLAB low pass filter
     %% apply low-pass filter to recon rbs n 16->16
     inDir = ['F:\IFEFSR\ExpSphinx\' dataSet num2str(fs) '' '\wav'];
-    outDir = fullfile(expDirectory, [dataSet 'LP' num2str(cutoff*1000*fs) ...
+    outDir = fullfile(expDirectory, [dataSet 'LP' num2str(cutoff*8000) ...
         'N' num2str(nFilt) 'FS' num2str(fs)]);
-    batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff, inExt, outExt );
+    batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff/(fs/8), inExt, outExt );
     
 end
 
