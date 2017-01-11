@@ -11,7 +11,7 @@ DATASET = [{'BASE'}];
 % CUTOFF = [{0.625}];
 CUTOFF = num2cell((4000:500:7500) / 8000);
 NFILT = [{16}, {32}];
-FS = [{8}, {16}];
+FS = [{8}];
 
 P = buildParamsMatrix( DATASET, CUTOFF, NFILT, FS );
 for pIdx = 1:size(P, 1)
@@ -22,10 +22,11 @@ for pIdx = 1:size(P, 1)
     
     %% MATLAB low pass filter
     %% apply low-pass filter to recon rbs n 16->16
-    inDir = ['F:\IFEFSR\ExpSphinx\' dataSet num2str(fs) '' '\wav'];
+    inDir = ['F:\IFEFSR\ExpSphinx\' dataSet '16' '\wav'];
     outDir = fullfile(expDirectory, [dataSet 'LP' num2str(cutoff*8000) ...
         'N' num2str(nFilt) 'FS' num2str(fs)]);
-    batchMATLABLPFilter( fileList, inDir, outDir, nFilt, cutoff/(fs/8), inExt, outExt );
+    %     batchMATLABResample2( fileList, inDir, outDir, nFilt, cutoff/(fs/8), inExt, outExt );
+    batchMATLABResample2( fileList, inDir, outDir, fs*1000, 16000, inExt, outExt, nFilt, cutoff )
     
 end
 
