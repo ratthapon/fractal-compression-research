@@ -26,7 +26,7 @@ for pIdx = 1:size(P, 1)
     outDir = fullfile(expDirectory, [dataSet 'LP' num2str(cutoff*8000) ...
         'N' num2str(nFilt) 'FS' num2str(fs)]);
     %     batchMATLABResample2( fileList, inDir, outDir, nFilt, cutoff/(fs/8), inExt, outExt );
-    batchMATLABResample2( fileList, inDir, outDir, fs*1000, 16000, inExt, outExt, nFilt, cutoff )
+    batchMATLABResample2( fileList, inDir, outDir, 16000, fs*1000, inExt, outExt, nFilt, cutoff )
     
 end
 

@@ -28,7 +28,7 @@ img_qi(OUTMAG, OUTMAG0)
 % [ CC, FBE, OUTMAG0, MAG, H, DCT] = mfcc2( wave, 16000);
 % figure(2), imagesc(OUTMAG0)
 
-[ CC, FBE, OUTMAG, MAG, H, DCT] = mfcc2( wave, 16000);
+[ CC, FBE, OUTMAG, MAG, H, DCT] = mfcc2( wave, 8000);
 frames = vec2frames( wav, Nw, Ns, 'cols', @hamming, false );
 
 figure(2), subplot(3,1,1), plot(frames(:, 10));

@@ -22,7 +22,7 @@ for i = 1:n
     filteredWave = filtfilt(mask, 1, inWave);
     
     % resample
-    outWave = resample(filteredWave, outFs, inFs);
+    outWave = resample(filteredWave, outFs, inFs, 0);
     
     % write output wave
     if strcmpi('raw', outExt)
