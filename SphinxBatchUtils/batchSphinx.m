@@ -19,15 +19,16 @@ HIFILT = {[{'CFG_HI_FILT'}, {'4000'}]; ...
 
 %% build dataSet matrix
 PREFIX = [{'BASE'}];
+TYPE = [{'T2'}, {'T3'}];
 DATASET_WITH_CUTOFF = [];
 DATASET_NO_CUTOFF = [];
 
 % % build cutoff dataset
 CUTOFF = num2cell((4000:500:7500));
-CUTOFF_P = buildParamsMatrix(PREFIX, CUTOFF);
+CUTOFF_P = buildParamsMatrix(PREFIX, TYPE, CUTOFF);
 DATASET_WITH_CUTOFF = cell(size(CUTOFF_P, 1), 1);
 for setIdx = 1:size(CUTOFF_P, 1)
-    DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} 'LP' num2str(CUTOFF_P{setIdx, 2}) 'N16FS'];
+    DATASET_WITH_CUTOFF{setIdx} = [CUTOFF_P{setIdx, 1} CUTOFF_P{setIdx, 2} 'LP' num2str(CUTOFF_P{setIdx, 3}) 'N16FS'];
 end
 
 % build no cutoff dataset

@@ -17,14 +17,13 @@ for i = 1:n
         inWave = rawread(filePath);
     end
     
+    outWave = inWave;
     % apply filter
-    if outFs > inFs
+    if outFs < inFs
         mask = fir1( nFilt, cutoff);
-        inWave = filtfilt(mask, 1, inWave);
+        inWave = filtfilt(mask, 1, inWave);% resample
+        outWave = resample(inWave, outFs, inFs, 0);
     end
-    
-    % resample
-    outWave = resample(inWave, outFs, inFs, 0);
     
     % write output wave
     if strcmpi('raw', outExt)
