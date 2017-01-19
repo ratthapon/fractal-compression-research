@@ -9,6 +9,5 @@ for i = 1:length(wave) - 1
        outWave(i+1) = wave(i+1);
     end
 end
-
 end
 
