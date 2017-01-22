@@ -11,7 +11,7 @@ NOTES = [{'Harmonic test'}];
 
 %% build dataSet matrix
 PREFIX = [{'BASE'}];
-HARTYPE = [{'ODD'}, {'EVEN'}, {'ODDEVEN'}];
+HARTYPE = [ {'ODDEVEN'}];
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);

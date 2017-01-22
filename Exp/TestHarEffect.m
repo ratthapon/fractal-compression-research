@@ -9,7 +9,7 @@ outExt = 'raw';
 DATASET = [{'BASE'}];
 % RBS = [{'2'}, {'4'}];
 % CUTOFF = [{0.625}];
-HARTYPE = [{'ODD'}, {'EVEN'}, {'ODDEVEN'}];
+HARTYPE = [{'ODDEVEN'}];
 INFS = [{8}, {16}];
 OUTFSFS = [{8}, {16}];
 
