@@ -9,7 +9,7 @@ outExt = 'raw';
 outFs = 16000;
 
 % permute paramters
-DATASET = [{'FCMATLABRBS'}];
+DATASET = [{'FCMATLABPITCHHARRBS'}];
 RBS = [{'2'}, {'4'}];
 FS = [{8}, {16}];
 P = buildParamsMatrix( DATASET, RBS, FS );

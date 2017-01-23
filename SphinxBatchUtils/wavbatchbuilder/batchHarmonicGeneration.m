@@ -17,7 +17,8 @@ for i = 1:n
     end
     
     % gen harmonic
-    outWave = harfunc(inWave);
+    [normWave, mu, sd] = zscore(inWave);
+    outWave = harfunc(normWave) * sd + mu;
     
     % write output wave
     if strcmpi('raw', outExt)
