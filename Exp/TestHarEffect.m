@@ -7,9 +7,7 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'BASE'}];
-% RBS = [{'2'}, {'4'}];
-% CUTOFF = [{0.625}];
-HARTYPE = [{'ODD'}, {'EVEN'}, {'ODDEVEN'}];
+HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}];
 INFS = [{8}, {16}];
 OUTFSFS = [{8}, {16}];
 
@@ -30,8 +28,12 @@ for pIdx = 1:size(P, 1)
     outDir = fullfile(expDirectory, [dataSet hartype 'HAR' ...
         'FS' num2str(inFs) num2str(outFs) '\wav\']);
     harfunc = @addOddEvenHar;
-    if strcmpi(hartype, 'ODD')
-        harfunc = @addOddHar;
+    if strcmpi(hartype, 'ODD1')
+        harfunc = @(in) addOddHar(in, 1, 1.0);
+    elseif strcmpi(hartype, 'ODD2')
+        harfunc = @(in) addOddHar(in, 2, 1.0);
+    elseif strcmpi(hartype, 'ODD3')
+        harfunc = @(in) addOddHar(in, 3, 1.0);
     elseif strcmpi(hartype, 'EVEN')
         harfunc = @addEvenHar;
     elseif strcmpi(hartype, 'ODDEVEN')
