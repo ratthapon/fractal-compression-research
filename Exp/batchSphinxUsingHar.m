@@ -13,7 +13,13 @@ NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t1'}, {'Exponential mag fi
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
 % HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}];
-HARTYPE = [ {'PITCH7'}, {'PITCH9'}];
+% HARTYPE = [ {'PITCH6'}];
+HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}, ...
+    {'PITCH2'}, {'PITCH3'}, {'PITCH4'}, {'PITCH5'}, {'PITCH6'}, {'PITCH7'}, ...
+    {'PITCH8'}, {'PITCH9'}];
+% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCHT2'}, ...
+%     {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, {'PITCH6T2'}, {'PITCH7T2'}, ...
+%     {'PITCH8T2'}, {'PITCH9T2'}];
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);
@@ -26,7 +32,7 @@ end
 BASE = [{'BASE'}; {'FCMATLABRBS4FS'}];
 
 % DATASET = [DATASET_NO_HAR; DATASET_WITH_HAR];
-DATASET = [DATASET_WITH_HAR];
+DATASET = [BASE; DATASET_WITH_HAR];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...

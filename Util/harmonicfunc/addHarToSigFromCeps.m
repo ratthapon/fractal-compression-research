@@ -10,6 +10,7 @@ stopFreq = 1;                           % nft
 fh = (0:df:stopFreq-df)';               % seconds
 magFilt = exp(-(1:nfft)/nfft)';
 % magFilt = 1 * atan((1:nfft)/nfft)';
+nPitch = 1;
 if ~isempty(varargin)
     nPitch = varargin{1};
 end
@@ -38,13 +39,11 @@ for i = 1:size(frames, 2)
     crng = originCeps(t>=2e-3 & t<=10e-3, i);
     
     % determine the pitch index
-    sortedPitch = sortrows([crng(:) [1:length(crng)]']);
+    sortedPitch = sortrows([crng(:) (1:length(crng))']);
     for p = 1:nPitch
         I = sortedPitch(p, 2);
-        %     [pitchMag,I] = max(crng);
         
         % get the fundamental frequency from index
-        % fprintf('Complex cepstrum F0 estimate is %3.2f Hz.\n',1/trng(I));
         f0 = 1/trng(I);
         fundFreq(i) = f0;
         
@@ -52,9 +51,11 @@ for i = 1:size(frames, 2)
         f0FT = outFs/2/nfft/f0;
         
         % synthesize the harmonic filter
-        synthHar(:, i) = synthHar(:, i) .* (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
+%         synthHar(:, i) = synthHar(:, i) .* (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
+        synthHar(:, i) = synthHar(:, i) + ...
+            (1/nPitch) * (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
         halfOutFsIdx = floor(Nw/2);
-        [vals, localMinPeaks] = findpeaks(-synthHar(:, i));
+        [~, localMinPeaks] = findpeaks(-synthHar(:, i));
         halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
         lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
         synthHar(1:lowerF0Idx, i) = 1;
