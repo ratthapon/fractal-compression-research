@@ -18,7 +18,17 @@ for i = 1:n
     
     % gen harmonic
     [normWave, mu, sd] = zscore(inWave);
-    outWave = harfunc(normWave) * sd + mu;
+    if isempty(regexpi(outDir, 'pitch'))
+        outWave = harfunc(normWave) * sd + mu;
+    else
+        originSpeech = [];
+        if strcmpi('raw', inExt)
+            inWavePath = normpath(char(strcat('F:/IFEFSR/ExpSphinx/BASE8/wav/', fileList{i}, '.raw')));
+            originSpeech = rawread(inWavePath);
+        end
+        [normOriginWave, ~, ~] = zscore(originSpeech);
+        outWave = harfunc(normOriginWave, normWave) * sd + mu;
+    end
     
     % write output wave
     if strcmpi('raw', outExt)
