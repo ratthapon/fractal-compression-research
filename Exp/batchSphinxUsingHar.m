@@ -4,14 +4,16 @@ function batchSphinxUsingHar()
 
 %% define sets of parameters
 EXP = [{'F:/IFEFSR/ExpSphinx'}];
-PREEMP = [{'95'}];
-FEATEXTRACTOR = [{'Sphinx5FE'}, ];
-FEATCASE = [{'caseA'}, {'caseB'}];
-NOTES = [{'Harmonic test'}];
+PREEMP = [{'97'}];
+FEATEXTRACTOR = [{'Sphinx5FE'}];
+FEATCASE = [ {'caseA'}, {'caseB'}];
+NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t1'}, {'Exponential mag filter'},...
+    {'N harmonic filter'}];
 
 %% build dataSet matrix
-PREFIX = [{'BASE'}];
-HARTYPE = [ {'ODDEVEN'}];
+PREFIX = [{'FCMATLABRBS4FS'}];
+% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}];
+HARTYPE = [ {'PITCH7'}, {'PITCH9'}];
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);
@@ -21,13 +23,10 @@ for setIdx = 1:size(HAR_P, 1)
 end
 
 % build no harmonic dataset
-DATASET_NO_HAR = cell(size(PREFIX, 1), 1);
-for setIdx = 1:size(PREFIX, 1)
-    DATASET_NO_HAR{setIdx} = [PREFIX{setIdx, 1} ''];
-end
+BASE = [{'BASE'}; {'FCMATLABRBS4FS'}];
 
 % DATASET = [DATASET_NO_HAR; DATASET_WITH_HAR];
-DATASET = [ DATASET_WITH_HAR];
+DATASET = [DATASET_WITH_HAR];
 
 RECOGCASE = [{'origin'}, {'cross'}];
 P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
@@ -49,10 +48,16 @@ for expIdx = 1:size(P, 1)
         featCase, dataSet, recogCase, parameters, NOTES );
     
     %% launch feature extraction
-%     batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
-%         featCase, dataSet, recogCase );
-    extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
-        featCase, dataSet, recogCase );
+    if strcmpi(featExtractor, 'MATLAB')
+        batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
+            featCase, dataSet, recogCase );
+    elseif strcmpi(featExtractor, 'Sphinx5FE')
+        extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
+            featCase, dataSet, recogCase );
+%     elseif strcmpi(featExtractor, 'Sphinx5FE') && ~isempty(regexpi(dataSet, 'pitchhar'))
+%         batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
+%             featCase, dataSet, recogCase );
+    end
     
     %% launch Sphinxtrain
     trainSphinx( expDirPrefix, preemAlphaStr, featExtractor, ...

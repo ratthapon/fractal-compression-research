@@ -6,10 +6,11 @@ fileList = importdata( fullfile(expDirectory, 'an4traintest.txt') );
 inExt = 'raw';
 outExt = 'raw';
 
-DATASET = [{'BASE'}];
-HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}];
+DATASET = [{'FCMATLABRBS4FS'}];
+% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}];
+HARTYPE = [{'PITCH7'}, {'PITCH9'}];
 INFS = [{8}, {16}];
-OUTFSFS = [{8}, {16}];
+OUTFSFS = [{16}];
 
 P = buildParamsMatrix( DATASET, HARTYPE, INFS, OUTFSFS );
 for pIdx = 1:size(P, 1)
@@ -38,6 +39,15 @@ for pIdx = 1:size(P, 1)
         harfunc = @addEvenHar;
     elseif strcmpi(hartype, 'ODDEVEN')
         harfunc = @addOddEvenHar;
+    elseif strcmpi(hartype, 'PITCH')
+        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+            inFs * 1000, outFs  * 1000 );
+    elseif strcmpi(hartype, 'PITCH7')
+        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+            inFs * 1000, outFs  * 1000, 7 );
+    elseif strcmpi(hartype, 'PITCH9')
+        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+            inFs * 1000, outFs  * 1000, 9 );
     end
     batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
     
