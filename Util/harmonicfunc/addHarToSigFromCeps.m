@@ -65,6 +65,7 @@ for i = 1:size(frames, 2)
     % apply the harmonic filter to spectrum
     specWithHar(2:end, i) = inSpec(2:end, i) .*  ...
         ((nPitch/2) * synthHar(:, i) + (nPitch/2)) .* magFilt;
+    synthHar(:, i) = ((nPitch/2) * synthHar(:, i) + (nPitch/2)) .* magFilt;
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
