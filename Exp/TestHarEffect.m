@@ -8,7 +8,11 @@ outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
 % HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}];
-HARTYPE = [{'PITCH7'}, {'PITCH9'}];
+% HARTYPE = [{'PITCH6'}];
+% HARTYPE = [{'PITCHT2'}, {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, ...
+%     {'PITCH6T2'}, {'PITCH7T2'}, {'PITCH8T2'}, {'PITCH9T2'}];
+HARTYPE = [{'PITCHT3'}, {'PITCH2T3'}, {'PITCH3T3'}, {'PITCH4T3'}, {'PITCH5T3'}, ...
+    {'PITCH6T3'}, {'PITCH7T3'}, {'PITCH8T3'}, {'PITCH9T3'}];
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
 
@@ -39,15 +43,13 @@ for pIdx = 1:size(P, 1)
         harfunc = @addEvenHar;
     elseif strcmpi(hartype, 'ODDEVEN')
         harfunc = @addOddEvenHar;
-    elseif strcmpi(hartype, 'PITCH')
+    elseif isempty(regexp(hartype, 'PITCH\d', 'once'))
         harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
             inFs * 1000, outFs  * 1000 );
-    elseif strcmpi(hartype, 'PITCH7')
+    elseif ~isempty(regexp(hartype, 'PITCH\d', 'once'))
+        nPitch = sscanf(hartype, 'PITCH%d');
         harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-            inFs * 1000, outFs  * 1000, 7 );
-    elseif strcmpi(hartype, 'PITCH9')
-        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-            inFs * 1000, outFs  * 1000, 9 );
+            inFs * 1000, outFs  * 1000, nPitch );
     end
     batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
     

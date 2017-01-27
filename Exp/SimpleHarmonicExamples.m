@@ -118,6 +118,19 @@ OUTMAG08 = [OUTMAG08; zeros(size(OUTMAG08)) ];
 [ Tw, Ts, alpha, M, N, L, LF, HF ] = getMFCCSphinxParams();
 [ CC,FBE, OUTMAG, MAG, H, DCT] = mfcc3( recWave, origin8, 8000, 16000, Tw, Ts, alpha, @hamming, [LF, HF], M, N, L );
 
+% n-pitch harmonic
+recWaveH6_1 = addHarToSigFromCeps( origin8, recWave, 8000, 16000);
+recWaveH6_3 = addHarToSigFromCeps( origin8, recWave, 8000, 16000, 2 );
+recWaveH6_5 = addHarToSigFromCeps( origin8, recWave, 8000, 16000, 3 );
+recWaveH6_7 = addHarToSigFromCeps( origin8, recWave, 8000, 16000, 4 );
+recWaveH6_9 = addHarToSigFromCeps( origin8, recWave, 8000, 16000, 5 );
+
+[ CC0RECH6_1, FBE0RECH6_1, OUTMAG0RECH6_1, ~, ~, ~] = mfcc2( recWaveH6_1, 16000);
+[ CC0RECH6_3, FBE0RECH6_3, OUTMAG0RECH6_3, ~, ~, ~] = mfcc2( recWaveH6_3, 16000);
+[ CC0RECH6_5, FBE0RECH6_5, OUTMAG0RECH6_5, ~, ~, ~] = mfcc2( recWaveH6_5, 16000);
+[ CC0RECH6_7, FBE0RECH6_7, OUTMAG0RECH6_7, ~, ~, ~] = mfcc2( recWaveH6_7, 16000);
+[ CC0RECH6_9, FBE0RECH6_9, OUTMAG0REC, ~, ~, ~] = mfcc2( recWaveH6_9, 16000);
+
 % visualize spectrum
 plotCMPSpec(figure, ...
     OUTMAG08, 'Spectrum original 8kHz', ...
@@ -155,5 +168,9 @@ plotCMPSpec(figure, ...
     OUTMAG0REC, 'Spectrum reconstructed 8->16kHz', ...
     OUTMAG0RECH6, 'Spectrum reconstructed harmonic T6 8->16kHz');
 
-
+plotCMPSpec(figure, ...
+    OUTMAG08, 'Spectrum original 8kHz', ...
+    OUTMAG016, 'Spectrum original 16kHz', ...
+    OUTMAG0REC, 'Spectrum reconstructed 8->16kHz', ...
+    OUTMAG0RECH6_3, 'Spectrum reconstructed harmonic T6-3 8->16kHz');
 
