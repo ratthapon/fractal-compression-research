@@ -1,4 +1,4 @@
-function [ sigWithHar ] = addHarToSigFromCeps( originSig, sig, inFs, outFs, varargin )
+function [ sigWithHar, fundFreq, synthHar ] = addHarToSigFromCeps( originSig, sig, inFs, outFs, varargin )
 %ADDHARTOSPECFROMCEPS Generate the higher harmonic from lower fs signal
 %then add to higher fs spectrum.
 
@@ -53,7 +53,7 @@ for i = 1:size(frames, 2)
         % synthesize the harmonic filter
 %         synthHar(:, i) = synthHar(:, i) .* (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
         synthHar(:, i) = synthHar(:, i) + ...
-            (1/nPitch) * (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
+            (1/nPitch) * sin(2 * pi * 1/f0FT * fh - pi/2);
         halfOutFsIdx = floor(Nw/2);
         [~, localMinPeaks] = findpeaks(-synthHar(:, i));
         halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
@@ -63,7 +63,8 @@ for i = 1:size(frames, 2)
         
     end
     % apply the harmonic filter to spectrum
-    specWithHar(2:end, i) = inSpec(2:end, i) .* synthHar(:, i);
+    specWithHar(2:end, i) = inSpec(2:end, i) .*  ...
+        ((nPitch/2) * synthHar(:, i) + (nPitch/2)) .* magFilt;
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
