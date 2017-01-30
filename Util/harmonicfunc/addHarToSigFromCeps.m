@@ -2,6 +2,13 @@ function [ sigWithHar, fundFreq, synthHar ] = addHarToSigFromCeps( originSig, si
 %ADDHARTOSPECFROMCEPS Generate the higher harmonic from lower fs signal
 %then add to higher fs spectrum.
 
+% if inFs >= outFs
+%     fundFreq = [];
+%     synthHar = [];
+%     sigWithHar = sig;
+%     return;
+% end
+
 nfft = 512;
 dt = 1/inFs;                            % sample duration
 t = 0:dt:length(originSig)*dt-dt;       % time index of sample
@@ -51,21 +58,25 @@ for i = 1:size(frames, 2)
         f0FT = outFs/2/nfft/f0;
         
         % synthesize the harmonic filter
-%         synthHar(:, i) = synthHar(:, i) .* (0.5*sin(2 * pi * 1/f0FT * fh - pi/2) + 0.5) .* magFilt;
-        synthHar(:, i) = synthHar(:, i) + ...
-            (1/nPitch) * sin(2 * pi * 1/f0FT * fh - pi/2);
-        halfOutFsIdx = floor(Nw/2);
-        [~, localMinPeaks] = findpeaks(-synthHar(:, i));
-        halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
-        lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
-        synthHar(1:lowerF0Idx, i) = 1;
-        synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
-        
+        synthHar(:, i) = synthHar(:, i) .*  ...
+            (sin(2 * pi * 1/f0FT * fh - pi/2));
     end
+    % bias harmonic
+    synthHar(:, i) = 0.5 * synthHar(:, i) + 0.5;
+    synthHar(:, i) = synthHar(:, i) .* magFilt;
+    
+    % retain lower frequency spectrum
+    halfOutFsIdx = floor(Nw/2);
+    [~, localMinPeaks] = findpeaks(-synthHar(:, i));
+    halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
+    lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
+    synthHar(1:lowerF0Idx, i) = 1;
+    
+    % duplicate the half spectrum
+    synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
+    
     % apply the harmonic filter to spectrum
-    specWithHar(2:end, i) = inSpec(2:end, i) .*  ...
-        ((nPitch/2) * synthHar(:, i) + (nPitch/2)) .* magFilt;
-    synthHar(:, i) = ((nPitch/2) * synthHar(:, i) + (nPitch/2)) .* magFilt;
+    specWithHar(2:end, i) = inSpec(2:end, i) .* synthHar(:, i);
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
