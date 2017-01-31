@@ -2,12 +2,12 @@ function [ sigWithHar, fundFreq, synthHar ] = addHarToSigFromCeps( originSig, si
 %ADDHARTOSPECFROMCEPS Generate the higher harmonic from lower fs signal
 %then add to higher fs spectrum.
 
-% if inFs >= outFs
-%     fundFreq = [];
-%     synthHar = [];
-%     sigWithHar = sig;
-%     return;
-% end
+if inFs >= outFs
+    fundFreq = [];
+    synthHar = [];
+    sigWithHar = sig;
+    return;
+end
 
 nfft = 512;
 dt = 1/inFs;                            % sample duration
