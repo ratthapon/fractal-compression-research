@@ -2,12 +2,12 @@ function [ sigWithHar, fundFreq, synthHar ] = addHarToSigFromCeps( originSig, si
 %ADDHARTOSPECFROMCEPS Generate the higher harmonic from lower fs signal
 %then add to higher fs spectrum.
 
-% if inFs >= outFs
-%     fundFreq = [];
-%     synthHar = [];
-%     sigWithHar = sig;
-%     return;
-% end
+if inFs >= outFs
+    fundFreq = [];
+    synthHar = [];
+    sigWithHar = sig;
+    return;
+end
 
 nfft = 512;
 dt = 1/inFs;                            % sample duration
@@ -64,6 +64,7 @@ for i = 1:size(frames, 2)
     % bias harmonic
     synthHar(:, i) = (synthHar(:, i) - min(synthHar(:, i))) ...
         / (max(synthHar(:, i)) - min(synthHar(:, i))) ;
+    synthHar(:, i) = synthHar(:, i) + 1;
     synthHar(:, i) = synthHar(:, i) .* magFilt;
     
     % retain lower frequency spectrum
