@@ -26,10 +26,10 @@ end
 [ Tw, Ts, ~, ~, ~, ~, ~, ~ ] = getMFCCSphinxParams();
 Nw = round( 1E-3*Tw* 8000);    % frame duration (samples)
 Ns = round( 1E-3*Ts* 8000);    % frame shift (samples)
-frames = vec2frames( originSig, Nw, Ns, 'cols', @hamming, false );
-
 Nw2 = round( 1E-3*Tw*outFs );    % frame duration (samples)
 Ns2 = round( 1E-3*Ts*outFs );    % frame shift (samples)
+
+frames = vec2frames( originSig, Nw2, Ns2, 'cols', @hamming, false );
 framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
 
 % initialize data
