@@ -7,7 +7,7 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'97'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}];
 FEATCASE = [ {'caseA'}, {'caseB'}];
-NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t5.0'}, {'Exponential mag filter'},...
+NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t5.1'}, {'Exponential mag filter'},...
     {'N harmonic filter'}];
 
 %% build dataSet matrix
@@ -20,7 +20,7 @@ PREFIX = [{'FCMATLABRBS4FS'}];
 % HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCHT2'}, ...
 %     {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, {'PITCH6T2'}, {'PITCH7T2'}, ...
 %     {'PITCH8T2'}, {'PITCH9T2'}];
-HARTYPE = [{'PITCHT5'}, {'PITCH2T5'}, {'PITCH3T5'}, {'PITCH4T5'}, {'PITCH5T5'}];
+HARTYPE = [{'PITCHT51'}, {'PITCH2T51'}, {'PITCH3T51'}, {'PITCH4T51'}, {'PITCH5T51'}];
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);
