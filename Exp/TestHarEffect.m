@@ -7,12 +7,8 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}];
-% HARTYPE = [{'PITCH6'}];
-% HARTYPE = [{'PITCHT2'}, {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, ...
-%     {'PITCH6T2'}, {'PITCH7T2'}, {'PITCH8T2'}, {'PITCH9T2'}];
-HARTYPE = [{'PITCHT3'}, {'PITCH2T3'}, {'PITCH3T3'}, {'PITCH4T3'}, {'PITCH5T3'}, ...
-    {'PITCH6T3'}, {'PITCH7T3'}, {'PITCH8T3'}, {'PITCH9T3'}];
+HARTYPE = [{'PITCHT4'}, {'PITCH2T4'}, {'PITCH3T4'}, {'PITCH4T4'}, {'PITCH5T4'}];
+
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
 
