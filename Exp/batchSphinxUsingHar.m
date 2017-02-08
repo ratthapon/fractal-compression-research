@@ -7,20 +7,12 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'97'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}];
 FEATCASE = [ {'caseA'}, {'caseB'}];
-NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t5.3'}, {'Exponential mag filter'},...
+NOTES = [{'Frequency harmonic'}, {'Half harmonic filter t5.4'}, {'Exponential mag filter'},...
     {'N harmonic filter'}, {'Fix pitches sorting'}];
 
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}];
-% HARTYPE = [ {'PITCH6'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}, ...
-%     {'PITCH2'}, {'PITCH3'}, {'PITCH4'}, {'PITCH5'}, {'PITCH6'}, {'PITCH7'}, ...
-%     {'PITCH8'}, {'PITCH9'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCHT2'}, ...
-%     {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, {'PITCH6T2'}, {'PITCH7T2'}, ...
-%     {'PITCH8T2'}, {'PITCH9T2'}];
-HARTYPE = [{'PITCHT53'}, {'PITCH2T53'}, {'PITCH3T53'}, {'PITCH4T53'}, {'PITCH5T53'}];
+HARTYPE = [{'PITCHT54'}, {'PITCH2T54'}, {'PITCH3T54'}, {'PITCH4T54'}, {'PITCH5T54'}];
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);
@@ -30,7 +22,7 @@ for setIdx = 1:size(HAR_P, 1)
 end
 
 % build no harmonic dataset
-BASE = [{'BASE'}; {'FCMATLABRBS4FS'}];
+BASE = [{'BASE'}; PREFIX];
 
 % DATASET = [DATASET_NO_HAR; DATASET_WITH_HAR];
 DATASET = [BASE; DATASET_WITH_HAR];
@@ -61,9 +53,6 @@ for expIdx = 1:size(P, 1)
     elseif strcmpi(featExtractor, 'Sphinx5FE')
         extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
             featCase, dataSet, recogCase );
-%     elseif strcmpi(featExtractor, 'Sphinx5FE') && ~isempty(regexpi(dataSet, 'pitchhar'))
-%         batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
-%             featCase, dataSet, recogCase );
     end
     
     %% launch Sphinxtrain
