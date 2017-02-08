@@ -12,14 +12,6 @@ NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t5.3'}, {'Exponential mag 
 
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}];
-% HARTYPE = [ {'PITCH6'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCH'}, ...
-%     {'PITCH2'}, {'PITCH3'}, {'PITCH4'}, {'PITCH5'}, {'PITCH6'}, {'PITCH7'}, ...
-%     {'PITCH8'}, {'PITCH9'}];
-% HARTYPE = [{'ODD1'}, {'ODD2'}, {'ODD3'}, {'EVEN'}, {'ODDEVEN'}, {'PITCHT2'}, ...
-%     {'PITCH2T2'}, {'PITCH3T2'}, {'PITCH4T2'}, {'PITCH5T2'}, {'PITCH6T2'}, {'PITCH7T2'}, ...
-%     {'PITCH8T2'}, {'PITCH9T2'}];
 HARTYPE = [{'PITCHT53'}, {'PITCH2T53'}, {'PITCH3T53'}, {'PITCH4T53'}, {'PITCH5T53'}];
 
 % % build harmonic dataset
@@ -61,9 +53,6 @@ for expIdx = 1:size(P, 1)
     elseif strcmpi(featExtractor, 'Sphinx5FE')
         extractFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
             featCase, dataSet, recogCase );
-%     elseif strcmpi(featExtractor, 'Sphinx5FE') && ~isempty(regexpi(dataSet, 'pitchhar'))
-%         batchMATLABFeat( expDirPrefix, preemAlphaStr, featExtractor, ...
-%             featCase, dataSet, recogCase );
     end
     
     %% launch Sphinxtrain
