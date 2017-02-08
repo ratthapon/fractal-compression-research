@@ -15,6 +15,8 @@ t = 0:dt:length(originSig)*dt-dt;       % time index of sample
 df = 1/nfft;                            % nft per sample
 stopFreq = 1;                           % nft
 fh = (0:df:stopFreq-df)';               % seconds
+quartNfft = nfft/4;
+logisBias = 1./(1 + exp(-(-(quartNfft*1.5):(quartNfft*2.5)-1)/16));
 magFilt = exp(-(1:nfft)/nfft)';
 % magFilt = 1 * atan((1:nfft)/nfft)';
 nPitch = 1;
@@ -46,7 +48,7 @@ for i = 1:size(frames, 2)
     crng = originCeps(t>=2e-3 & t<=10e-3, i);
     
     % determine the pitch index
-    sortedPitch = sortrows([crng(:) (1:length(crng))']);
+    sortedPitch = sortrows([-crng(:) (1:length(crng))']);
     for p = 1:nPitch
         I = sortedPitch(p, 2);
         
