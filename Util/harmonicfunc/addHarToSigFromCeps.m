@@ -46,7 +46,7 @@ for i = 1:size(frames, 2)
     crng = originCeps(t>=2e-3 & t<=10e-3, i);
     
     % determine the pitch index
-    sortedPitch = sortrows([crng(:) (1:length(crng))']);
+    sortedPitch = sortrows([-crng(:) (1:length(crng))']);
     for p = 1:nPitch
         I = sortedPitch(p, 2);
         
