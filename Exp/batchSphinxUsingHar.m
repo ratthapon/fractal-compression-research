@@ -7,7 +7,7 @@ EXP = [{'F:/IFEFSR/ExpSphinx'}];
 PREEMP = [{'97'}];
 FEATEXTRACTOR = [{'Sphinx5FE'}];
 FEATCASE = [ {'caseA'}, {'caseB'}];
-NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t1'}, {'Exponential mag filter'},...
+NOTES = [{'Spatial harmonic'}, {'Half harmonic filter t4'}, {'Exponential mag filter'},...
     {'N harmonic filter'}];
 
 %% build dataSet matrix
