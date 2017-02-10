@@ -70,9 +70,10 @@ for i = 1:size(frames, 2)
     synthHar(:, i) = synthHar(:, i) .* magFilt;
     
     % retain lower frequency spectrum
+    startHarFreqRatio = 3.5 / 4;
     halfOutFsIdx = floor(Nw/2);
     [~, localMinPeaks] = findpeaks(-synthHar(:, i));
-    halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
+    halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx * startHarFreqRatio, 1);
     lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
     synthHar(1:lowerF0Idx, i) = 1;
     

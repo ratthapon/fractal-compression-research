@@ -7,7 +7,7 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-HARTYPE = [{'PITCHT54'}, {'PITCH2T54'}, {'PITCH3T54'}, {'PITCH4T54'}, {'PITCH5T54'}];
+HARTYPE = [{'PITCHT56'}, {'PITCH2T56'}, {'PITCH3T56'}, {'PITCH4T56'}, {'PITCH5T56'}];
 
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
