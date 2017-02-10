@@ -23,8 +23,7 @@ for i = 1:n
     else
         originSpeech = [];
         if strcmpi('raw', inExt)
-            inWavePath = normpath([inDir '/' fileList{i} '.raw']);
-            % inWavePath = normpath(char(strcat('F:/IFEFSR/ExpSphinx/BASE8/wav/', fileList{i}, '.raw')));
+            inWavePath = normpath(char(strcat('F:/IFEFSR/ExpSphinx/BASE8/wav/', fileList{i}, '.raw')));
             originSpeech = rawread(inWavePath);
         end
         [normOriginWave, ~, ~] = zscore(originSpeech);
