@@ -19,9 +19,9 @@ quartNfft = nfft/4;
 logisBias = 1./(1 + exp(-(-(quartNfft*1.5):(quartNfft*2.5)-1)/16));
 magFilt = exp(-(1:nfft)/nfft)';
 % magFilt = 1 * atan((1:nfft)/nfft)';
-nPitch = 1;
+nHar = 1;
 if ~isempty(varargin)
-    nPitch = varargin{1};
+    nHar = varargin{1};
 end
 
 % obtain the mfcc parameters
@@ -49,20 +49,19 @@ for i = 1:size(frames, 2)
     
     % determine the pitch index
     sortedPitch = sortrows([-crng(:) (1:length(crng))']);
-    for p = 1:nPitch
-        I = sortedPitch(p, 2);
-        
-        % get the fundamental frequency from index
-        f0 = 1/trng(I);
-        fundFreq(i) = f0;
-        
-        % caculate the new frequency index of pitch
-        f0FT = outFs/2/nfft/f0;
-        
-        % synthesize the harmonic filter
-        synthHar(:, i) = synthHar(:, i) .*  ...
-            (sin(2 * pi * 1/f0FT * fh - pi/2));
-    end
+    I = sortedPitch(1, 2);
+    
+    % get the fundamental frequency from index
+    f0 = 1/trng(I);
+    fundFreq(i) = f0;
+    
+    % caculate the new frequency index of pitch
+    f0FT = outFs/2/nfft/f0;
+    
+    % synthesize the harmonic filter
+    synthHar(:, i) = synthHar(:, i) .*  ...
+        (sin(2 * pi * 1/f0FT * fh - pi/2));
+    
     % bias harmonic
     synthHar(:, i) = (synthHar(:, i) - min(synthHar(:, i))) ...
         / (max(synthHar(:, i)) - min(synthHar(:, i))) ;
@@ -70,12 +69,13 @@ for i = 1:size(frames, 2)
     synthHar(:, i) = synthHar(:, i) .* magFilt;
     
     % retain lower frequency spectrum
-    startHarFreqRatio = 3.5 / 4;
     halfOutFsIdx = floor(Nw/2);
     [~, localMinPeaks] = findpeaks(-synthHar(:, i));
-    halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx * startHarFreqRatio, 1);
+    halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
     lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
+    upperF0Idx = localMinPeaks(halfLocalMinPeaksIdx + nHar);
     synthHar(1:lowerF0Idx, i) = 1;
+    synthHar(upperF0Idx:end, i) = 1;
     
     % duplicate the half spectrum
     synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
@@ -92,7 +92,7 @@ end
 
 invSpec = real(ifft(specWithHar, Nw2, 1));
 
-sigWithHar = deframe_sig(invSpec', length(sig), Nw2, Ns2, @hamming);
+% sigWithHar = deframe_sig(invSpec', length(sig), Nw2, Ns2, @hamming);
 % [ CC0REC, FBE0REC, OUTMAG0REC, ~, ~, ~] = mfcc2( sigWithHar, 16000);
 % figure;imagesc(OUTMAG0REC);
 % soundsc(sigWithHar, 16000)
