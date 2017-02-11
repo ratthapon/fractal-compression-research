@@ -19,9 +19,15 @@ quartNfft = nfft/4;
 logisBias = 1./(1 + exp(-(-(quartNfft*1.5):(quartNfft*2.5)-1)/16));
 magFilt = exp(-(1:nfft)/nfft)';
 % magFilt = 1 * atan((1:nfft)/nfft)';
-nHar = 1;
+nHar = nfft/2;
+nPitch = 1;
 if ~isempty(varargin)
-    nHar = varargin{1};
+    if length(varargin) == 1
+        nPitch = varargin{1};
+    elseif length(varargin) == 2
+        nPitch = varargin{1};
+        nHar = varargin{2};
+    end
 end
 
 % obtain the mfcc parameters
@@ -49,18 +55,21 @@ for i = 1:size(frames, 2)
     
     % determine the pitch index
     sortedPitch = sortrows([-crng(:) (1:length(crng))']);
-    I = sortedPitch(1, 2);
     
-    % get the fundamental frequency from index
-    f0 = 1/trng(I);
-    fundFreq(i) = f0;
-    
-    % caculate the new frequency index of pitch
-    f0FT = outFs/2/nfft/f0;
-    
-    % synthesize the harmonic filter
-    synthHar(:, i) = synthHar(:, i) .*  ...
-        (sin(2 * pi * 1/f0FT * fh - pi/2));
+    for p = 1:nPitch
+        I = sortedPitch(1, 2);
+
+        % get the fundamental frequency from index
+        f0 = 1/trng(I);
+        fundFreq(i) = f0;
+
+        % caculate the new frequency index of pitch
+        f0FT = outFs/2/nfft/f0;
+
+        % synthesize the harmonic filter
+        synthHar(:, i) = synthHar(:, i) .*  ...
+            (sin(2 * pi * 1/f0FT * fh - pi/2));
+    end
     
     % bias harmonic
     synthHar(:, i) = (synthHar(:, i) - min(synthHar(:, i))) ...

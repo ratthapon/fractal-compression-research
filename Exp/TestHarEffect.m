@@ -7,7 +7,8 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-HARTYPE = [{'PITCHT7'}, {'PITCH2T7'}, {'PITCH3T7'}, {'PITCH4T7'}, {'PITCH5T7'}];
+HARTYPE = [{'PITCHNHAR1T8'}, {'PITCH2NHAR1T8'}, {'PITCH3NHAR1T8'}, {'PITCH4NHAR1T8'}, {'PITCH5NHAR1T8'}, ...
+    {'PITCHNHAR10T8'}, {'PITCH2NHAR10T8'}, {'PITCH3NHAR10T8'}, {'PITCH4NHAR10T8'}, {'PITCH5NHAR10T8'}];
 
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
@@ -46,6 +47,11 @@ for pIdx = 1:size(P, 1)
         nPitch = sscanf(hartype, 'PITCH%d');
         harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
             inFs * 1000, outFs  * 1000, nPitch );
+        if ~isempty(regexp(hartype, 'NHAR\d', 'once'))
+            nHar = sscanf(hartype, 'NHAR%d');
+            harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+                inFs * 1000, outFs  * 1000, nPitch, nHar );
+        end
     end
     batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
     
