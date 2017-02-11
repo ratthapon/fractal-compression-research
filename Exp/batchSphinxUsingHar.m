@@ -12,8 +12,19 @@ NOTES = [{'Frequency harmonic'}, {'Half harmonic filter t7.0'}, {'Exponential ma
 
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
-HARTYPE = [{'PITCHNHAR1T8'}, {'PITCH2NHAR1T8'}, {'PITCH3NHAR1T8'}, {'PITCH4NHAR1T8'}, {'PITCH5NHAR1T8'}, ...
-    {'PITCHNHAR10T8'}, {'PITCH2NHAR10T8'}, {'PITCH3NHAR10T8'}, {'PITCH4NHAR10T8'}, {'PITCH5NHAR10T8'}];
+HARTPYEPREFIX = [{'PITCH1'},{'PITCH3'},{'PITCH5'}];
+NHAR = [{'NHAR1'},{'NHAR10'},{'NHAR20'}];
+MINPD = [{'MINPD1'},{'MINPD10'},{'MINPD20'}];
+TYPEVERSION = [{'T8'}];
+HARTYPE = [];
+HP = buildParamsMatrix( HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
+for hpIdx = 1:size(HP, 1)
+    harType = HP{hpIdx, 1};
+    nHar = HP{hpIdx, 2};
+    minPD = HP{hpIdx, 3};
+    typeVer = HP{hpIdx, 4};
+    HARTYPE{hpIdx} = [harType nHar minPD typeVer];
+end
 
 % % build harmonic dataset
 HAR_P = buildParamsMatrix(PREFIX, HARTYPE);

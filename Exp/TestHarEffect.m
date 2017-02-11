@@ -7,8 +7,19 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-HARTYPE = [{'PITCHNHAR1T8'}, {'PITCH2NHAR1T8'}, {'PITCH3NHAR1T8'}, {'PITCH4NHAR1T8'}, {'PITCH5NHAR1T8'}, ...
-    {'PITCHNHAR10T8'}, {'PITCH2NHAR10T8'}, {'PITCH3NHAR10T8'}, {'PITCH4NHAR10T8'}, {'PITCH5NHAR10T8'}];
+HARTPYEPREFIX = [{'PITCH1'},{'PITCH3'},{'PITCH5'}];
+NHAR = [{'NHAR1'},{'NHAR10'},{'NHAR20'}];
+MINPD = [{'MINPD1'},{'MINPD10'},{'MINPD20'}];
+TYPEVERSION = [{'T8'}];
+HARTYPE = [];
+HP = buildParamsMatrix( HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
+for hpIdx = 1:size(HP, 1)
+    harType = HP{hpIdx, 1};
+    nHar = HP{hpIdx, 2};
+    minPD = HP{hpIdx, 3};
+    typeVer = HP{hpIdx, 4};
+    HARTYPE{hpIdx} = [harType nHar minPD typeVer];
+end
 
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
@@ -44,13 +55,18 @@ for pIdx = 1:size(P, 1)
         harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
             inFs * 1000, outFs  * 1000 );
     elseif ~isempty(regexp(hartype, 'PITCH\d', 'once'))
-        nPitch = sscanf(hartype, 'PITCH%d');
+        nPitch = sscanf(cell2mat(regexp(hartype, 'PITCH\d+', 'match')), 'PITCH%d');
         harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
             inFs * 1000, outFs  * 1000, nPitch );
         if ~isempty(regexp(hartype, 'NHAR\d', 'once'))
-            nHar = sscanf(hartype, 'NHAR%d');
+            nHar = sscanf(cell2mat(regexp(hartype, 'NHAR\d+', 'match')), 'NHAR%d');
             harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
                 inFs * 1000, outFs  * 1000, nPitch, nHar );
+            if ~isempty(regexp(hartype, 'MINPD\d', 'once'))
+                minPD = sscanf(cell2mat(regexp(hartype, 'MINPD\d+', 'match')), 'MINPD%d');
+                harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+                    inFs * 1000, outFs  * 1000, nPitch, nHar, minPD );
+            end
         end
     end
     batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
