@@ -7,25 +7,27 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-HARTPYEPREFIX = [{'PITCH1'},{'PITCH3'},{'PITCH5'}];
-NHAR = [{'NHAR1'},{'NHAR10'},{'NHAR20'}];
-MINPD = [{'MINPD1'},{'MINPD10'},{'MINPD20'}];
+HARTPYEPREFIX = [{'PITCH5'}];
+NHAR = [{'NHAR10'}];
+MINPD = [{'MINPD10'}];
+EXCLUDEORIGIN = [{'EXCLUDEORIGIN'}, {'INCLUDEORIGIN'}];
 TYPEVERSION = [{'T8'}];
 HARTYPE = [];
-HP = buildParamsMatrix( HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
+HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
 for hpIdx = 1:size(HP, 1)
-    harType = HP{hpIdx, 1};
-    nHar = HP{hpIdx, 2};
-    minPD = HP{hpIdx, 3};
-    typeVer = HP{hpIdx, 4};
-    HARTYPE{hpIdx} = [harType nHar minPD typeVer];
+    excludeOrigin = HP{hpIdx, 1};
+    harType = HP{hpIdx, 2};
+    nHar = HP{hpIdx, 3};
+    minPD = HP{hpIdx, 4};
+    typeVer = HP{hpIdx, 5};
+    HARTYPE{hpIdx} = [harType nHar minPD excludeOrigin typeVer];
 end
 
 INFS = [{8}, {16}];
 OUTFSFS = [{16}];
 
 P = buildParamsMatrix( DATASET, HARTYPE, INFS, OUTFSFS );
-for pIdx = 1:size(P, 1)
+parfor pIdx = 1:size(P, 1)
     dataSet = P{pIdx, 1};
     hartype = P{pIdx, 2};
     inFs = P{pIdx, 3};
@@ -51,23 +53,33 @@ for pIdx = 1:size(P, 1)
         harfunc = @addEvenHar;
     elseif strcmpi(hartype, 'ODDEVEN')
         harfunc = @addOddEvenHar;
-    elseif isempty(regexp(hartype, 'PITCH\d', 'once'))
-        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-            inFs * 1000, outFs  * 1000 );
     elseif ~isempty(regexp(hartype, 'PITCH\d', 'once'))
+        nPitch = 1;
+        nHar = 1;
+        minCD = 1;
+        minHD = 1;
+        exclude = true;
+        
         nPitch = sscanf(cell2mat(regexp(hartype, 'PITCH\d+', 'match')), 'PITCH%d');
-        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-            inFs * 1000, outFs  * 1000, nPitch );
         if ~isempty(regexp(hartype, 'NHAR\d', 'once'))
             nHar = sscanf(cell2mat(regexp(hartype, 'NHAR\d+', 'match')), 'NHAR%d');
-            harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-                inFs * 1000, outFs  * 1000, nPitch, nHar );
-            if ~isempty(regexp(hartype, 'MINPD\d', 'once'))
-                minPD = sscanf(cell2mat(regexp(hartype, 'MINPD\d+', 'match')), 'MINPD%d');
-                harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
-                    inFs * 1000, outFs  * 1000, nPitch, nHar, minPD );
-            end
         end
+        if ~isempty(regexp(hartype, 'MINCD\d', 'once'))
+            minCD = sscanf(cell2mat(regexp(hartype, 'MINCD\d+', 'match')), 'MINCD%d');
+        end
+        if ~isempty(regexp(hartype, 'MINHD\d', 'once'))
+            minHD = sscanf(cell2mat(regexp(hartype, 'MINHD\d+', 'match')), 'MINHD%d');
+        end
+        if ~isempty(regexp(hartype, 'EXCLUDEORIGIN', 'once'))
+            exclude = true;
+        end
+        if ~isempty(regexp(hartype, 'INCLUDEORIGIN', 'once'))
+            exclude = false;
+        end
+        harfunc = @(originSig, sig) addHarToSigFromCeps( originSig, sig, ...
+            inFs * 1000, outFs  * 1000, ...
+            'npitch', nPitch, 'nhar', nHar, 'mincd', minCD, 'minhd', minHD, ...
+            'enableexcludeorigin', exclude);
     end
     batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
     

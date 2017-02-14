@@ -2,13 +2,6 @@ function [ sigWithHar, fundFreq, synthHar ] = addHarToSigFromCeps( originSig, si
 %ADDHARTOSPECFROMCEPS Generate the higher harmonic from lower fs signal
 %then add to higher fs spectrum.
 
-% if inFs >= outFs
-%     fundFreq = [];
-%     synthHar = [];
-%     sigWithHar = sig;
-%     return;
-% end
-
 nfft = 512;
 dt = 1/inFs;                            % sample duration
 t = 0:dt:length(originSig)*dt-dt;       % time index of sample
@@ -21,17 +14,29 @@ magFilt = exp(-(1:nfft)/nfft)';
 % magFilt = 1 * atan((1:nfft)/nfft)';
 nHar = nfft/2;
 nPitch = 1;
-MinPD = 1;
-if ~isempty(varargin)
-    if length(varargin) == 1
-        nPitch = varargin{1};
-    elseif length(varargin) == 2
-        nPitch = varargin{1};
-        nHar = varargin{2};
-    elseif length(varargin) == 3
-        nPitch = varargin{1};
-        nHar = varargin{2};
-        MinPD = varargin{3};
+minHD = 1;
+minCD = 1;
+for vIdx = 1:2:length(varargin)
+    switch lower(varargin{vIdx})
+        case 'npitch'
+            nPitch = varargin{vIdx + 1};
+        case 'nhar'
+            nHar = varargin{vIdx + 1};
+        case 'minhardist'
+        case 'minhd'
+            minHD = varargin{vIdx + 1};
+        case 'mincepsdist'
+        case 'mincd'
+            minCD = varargin{vIdx + 1};
+        case 'enableexcludeorigin'
+            isExclude = varargin{vIdx + 1};
+            if inFs >= outFs && isExclude == true
+                fundFreq = [];
+                synthHar = [];
+                sigWithHar = sig;
+                return;
+            end
+        otherwise
     end
 end
 
@@ -59,10 +64,12 @@ for i = 1:size(frames, 2)
     crng = originCeps(t>=2e-3 & t<=10e-3, i);
     
     % determine the pitch index
-    sortedPitch = sortrows([-crng(:) (1:length(crng))']);
+    [~, sortedPitch] = findpeaks(crng(:), ...
+        'MinPeakDistance', minCD, 'SortStr', 'descend');
+    nPitch = min(nPitch, length(sortedPitch));
     
     for p = 1:nPitch
-        I = sortedPitch(p, 2);
+        I = sortedPitch(p);
         
         % get the fundamental frequency from index
         f0 = 1/trng(I);
@@ -85,7 +92,7 @@ for i = 1:size(frames, 2)
     % retain lower frequency spectrum
     halfOutFsIdx = floor(Nw/2);
     [~, localMinPeaks] = findpeaks(-synthHar(:, i), ...
-        'MinPeakDistance', MinPD);
+        'MinPeakDistance', minHD);
     halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
     lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
     upperF0Idx = localMinPeaks(min(halfLocalMinPeaksIdx + nHar, ...

@@ -12,9 +12,9 @@ NOTES = [{'Frequency harmonic'}, {'Half harmonic filter t7.0'}, {'Exponential ma
 
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
-HARTPYEPREFIX = [{'PITCH1'},{'PITCH3'},{'PITCH5'}];
-NHAR = [{'NHAR1'},{'NHAR10'},{'NHAR20'}];
-MINPD = [{'MINPD1'},{'MINPD10'},{'MINPD20'}];
+HARTPYEPREFIX = [{'PITCH5'}];
+NHAR = [{'NHAR10'}];
+MINPD = [{'MINPD10'}];
 TYPEVERSION = [{'T8'}];
 HARTYPE = [];
 HP = buildParamsMatrix( HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
