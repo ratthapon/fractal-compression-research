@@ -8,19 +8,21 @@ outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
 HARTPYEPREFIX = [{'PITCH5'}];
-NHAR = [{'NHAR10'}];
-MINPD = [{'MINPD10'}];
+NHAR = [{'NHAR20'}];
+MINCD = [{'MINCD3'}];
+MINHD = [{'MINHD5'}];
 EXCLUDEORIGIN = [{'EXCLUDEORIGIN'}, {'INCLUDEORIGIN'}];
-TYPEVERSION = [{'T8'}];
+TYPEVERSION = [{'T81'}];
 HARTYPE = [];
-HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
+HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINCD, MINHD, TYPEVERSION );
 for hpIdx = 1:size(HP, 1)
     excludeOrigin = HP{hpIdx, 1};
     harType = HP{hpIdx, 2};
     nHar = HP{hpIdx, 3};
-    minPD = HP{hpIdx, 4};
-    typeVer = HP{hpIdx, 5};
-    HARTYPE{hpIdx} = [harType nHar minPD excludeOrigin typeVer];
+    minCD = HP{hpIdx, 4};
+    minHD = HP{hpIdx, 5};
+    typeVer = HP{hpIdx, 6};
+    HARTYPE{hpIdx} = [harType nHar minCD minHD excludeOrigin typeVer];
 end
 
 INFS = [{8}, {16}];

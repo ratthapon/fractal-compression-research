@@ -13,17 +13,21 @@ NOTES = [{'Frequency harmonic'}, {'Half harmonic filter t7.0'}, {'Exponential ma
 %% build dataSet matrix
 PREFIX = [{'FCMATLABRBS4FS'}];
 HARTPYEPREFIX = [{'PITCH5'}];
-NHAR = [{'NHAR10'}];
-MINPD = [{'MINPD10'}];
-TYPEVERSION = [{'T8'}];
+NHAR = [{'NHAR20'}];
+MINCD = [{'MINCD3'}];
+MINHD = [{'MINHD5'}];
+EXCLUDEORIGIN = [{'EXCLUDEORIGIN'}, {'INCLUDEORIGIN'}];
+TYPEVERSION = [{'T81'}];
 HARTYPE = [];
-HP = buildParamsMatrix( HARTPYEPREFIX, NHAR, MINPD, TYPEVERSION );
+HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINCD, MINHD, TYPEVERSION );
 for hpIdx = 1:size(HP, 1)
-    harType = HP{hpIdx, 1};
-    nHar = HP{hpIdx, 2};
-    minPD = HP{hpIdx, 3};
-    typeVer = HP{hpIdx, 4};
-    HARTYPE{hpIdx} = [harType nHar minPD typeVer];
+    excludeOrigin = HP{hpIdx, 1};
+    harType = HP{hpIdx, 2};
+    nHar = HP{hpIdx, 3};
+    minCD = HP{hpIdx, 4};
+    minHD = HP{hpIdx, 5};
+    typeVer = HP{hpIdx, 6};
+    HARTYPE{hpIdx} = [harType nHar minCD minHD excludeOrigin typeVer];
 end
 
 % % build harmonic dataset

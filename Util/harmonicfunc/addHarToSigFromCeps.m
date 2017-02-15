@@ -98,7 +98,7 @@ for i = 1:size(frames, 2)
     upperF0Idx = localMinPeaks(min(halfLocalMinPeaksIdx + nHar, ...
         length(localMinPeaks)));
     synthHar(1:lowerF0Idx, i) = 1;
-    synthHar(upperF0Idx:end, i) = 1;
+    synthHar(upperF0Idx:end, i) = 0;
     
     % duplicate the half spectrum
     synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
