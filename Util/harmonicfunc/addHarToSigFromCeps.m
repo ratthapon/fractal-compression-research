@@ -51,10 +51,10 @@ frames = vec2frames( originSig, Nw, Ns, 'cols', @hamming, false );
 framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
 
 % initialize data
-inSpec = fft(framesSig, nfft + 1, 1);
+inSpec = fft(framesSig, nfft, 1);
 originCeps = zeros(size(frames));
 fundFreq = zeros(1, size(frames, 2));
-specWithHar = zeros(nfft+1, size(frames, 2));
+specWithHar = zeros(nfft, size(frames, 2));
 synthHar = ones(nfft, size(frames, 2));
 
 for i = 1:size(frames, 2)
@@ -104,7 +104,7 @@ for i = 1:size(frames, 2)
     synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
     
     % apply the harmonic filter to spectrum
-    specWithHar(2:end, i) = inSpec(2:end, i) .* synthHar(:, i);
+    specWithHar(:, i) = inSpec(:, i) .* synthHar(:, i);
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
