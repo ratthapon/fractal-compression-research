@@ -54,7 +54,8 @@ framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
 inSpec = fft(framesSig, nfft, 1);
 originCeps = zeros(size(frames));
 fundFreq = zeros(1, size(frames, 2));
-specWithHar = zeros(nfft, size(frames, 2));
+originSpec = fft(frames, inFs/outFs*nfft, 1);
+specWithHar = zeros(size(framesSig));
 synthHar = ones(nfft, size(frames, 2));
 
 for i = 1:size(frames, 2)
@@ -100,11 +101,14 @@ for i = 1:size(frames, 2)
     synthHar(1:lowerF0Idx, i) = 1;
     synthHar(upperF0Idx:end, i) = 0;
     
-    % duplicate the half spectrum
-    synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
+    specWithHar(1:lowerF0Idx, i) = originSpec(1:lowerF0Idx, i);
     
     % apply the harmonic filter to spectrum
-    specWithHar(:, i) = inSpec(:, i) .* synthHar(:, i);
+    specWithHar(lowerF0Idx:upperF0Idx, i) = inSpec(lowerF0Idx:upperF0Idx, i) ...
+        .* synthHar(lowerF0Idx:upperF0Idx, i);
+    
+    % duplicate the half spectrum
+    specWithHar(end:-1:(end/2)+1, i) = specWithHar(1:(end/2), i);
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
