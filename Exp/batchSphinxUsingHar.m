@@ -48,7 +48,7 @@ P = buildParamsMatrix( EXP, PREEMP, FEATEXTRACTOR, ...
     FEATCASE, DATASET, RECOGCASE);
 
 %% iterate for each parameters combination
-for expIdx = 1:size(P, 1)
+parfor expIdx = 1:size(P, 1)
     expDirPrefix = P{expIdx, 1};
     preemAlphaStr = P{expIdx, 2};
     featExtractor = P{expIdx, 3};

@@ -22,11 +22,6 @@ expInfo{2} = cfg;
 expInfo{3} = [ nCorrectSent, nSent, nCorrectWord, nWord ];
 
 % write to matrix file
-data = load(fullfile(expDirPrefix, 'expsummary.mat'));
-data.expSummary = [data.expSummary; expInfo];
-expSummary = data.expSummary;
-save( fullfile(expDirPrefix, 'expsummary.mat'), ...
-    'expSummary');
 save( fullfile(expDirPrefix, 'ExpSummaries', [regexprep(timeString, '[: ]', '-') '.mat']), ...
     'expInfo');
 
