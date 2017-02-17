@@ -7,12 +7,12 @@ inExt = 'raw';
 outExt = 'raw';
 
 DATASET = [{'FCMATLABRBS4FS'}];
-HARTPYEPREFIX = [{'PITCH5'}];
+HARTPYEPREFIX = [{'HYBRIDSPECWITHOUTPITCH'}];
 NHAR = [{'NHAR20'}];
 MINCD = [{'MINCD3'}];
 MINHD = [{'MINHD5'}];
 EXCLUDEORIGIN = [{'EXCLUDEORIGIN'}, {'INCLUDEORIGIN'}];
-TYPEVERSION = [{'T9'}];
+TYPEVERSION = [{'TX'}];
 HARTYPE = [];
 HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINCD, MINHD, TYPEVERSION );
 for hpIdx = 1:size(HP, 1)
@@ -55,6 +55,17 @@ parfor pIdx = 1:size(P, 1)
         harfunc = @addEvenHar;
     elseif strcmpi(hartype, 'ODDEVEN')
         harfunc = @addOddEvenHar;
+    elseif ~isempty(regexp(hartype, 'HYBRIDSPEC', 'once'))
+        exclude = true;
+        if ~isempty(regexp(hartype, 'EXCLUDEORIGIN', 'once'))
+            exclude = true;
+        end
+        if ~isempty(regexp(hartype, 'INCLUDEORIGIN', 'once'))
+            exclude = false;
+        end
+        harfunc = @(originSig, sig) addHighSpecFromRecon( originSig, sig, ...
+            inFs * 1000, outFs  * 1000, ...
+            'enableexcludeorigin', exclude);
     elseif ~isempty(regexp(hartype, 'PITCH\d', 'once'))
         nPitch = 1;
         nHar = 1;
