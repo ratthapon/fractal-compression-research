@@ -54,7 +54,7 @@ framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
 inSpec = fft(framesSig, nfft, 1);
 originCeps = zeros(size(frames));
 fundFreq = zeros(1, size(frames, 2));
-originSpec = fft(frames, inFs/outFs*nfft, 1);
+originSpec = fft(frames, 0.5*nfft, 1);
 specWithHar = zeros(size(framesSig));
 synthHar = ones(nfft, size(frames, 2));
 
