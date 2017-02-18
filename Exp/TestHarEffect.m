@@ -12,7 +12,7 @@ NHAR = [{'NHAR20'}];
 MINCD = [{'MINCD3'}];
 MINHD = [{'MINHD5'}];
 EXCLUDEORIGIN = [{'EXCLUDEORIGIN'}, {'INCLUDEORIGIN'}];
-TYPEVERSION = [{'T9'}];
+TYPEVERSION = [{'T91'}];
 HARTYPE = [];
 HP = buildParamsMatrix( EXCLUDEORIGIN, HARTPYEPREFIX, NHAR, MINCD, MINHD, TYPEVERSION );
 for hpIdx = 1:size(HP, 1)
@@ -83,7 +83,7 @@ parfor pIdx = 1:size(P, 1)
             'npitch', nPitch, 'nhar', nHar, 'mincd', minCD, 'minhd', minHD, ...
             'enableexcludeorigin', exclude);
     end
-    batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt );
+    batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inFs, outFs, inExt, outExt );
     
 end
 

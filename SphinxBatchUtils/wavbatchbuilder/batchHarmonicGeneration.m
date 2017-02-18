@@ -1,4 +1,4 @@
-function batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inExt, outExt )
+function batchHarmonicGeneration( fileList, inDir, outDir, harfunc, inFs, outFs, inExt, outExt )
 %BATCHMATLABRESAMPLE Batch resample raw files from inDir and write to outDir
 %   fileList - general file ids list exclude directory and extension
 %   inDir - input directory
@@ -23,7 +23,8 @@ for i = 1:n
     else
         originSpeech = [];
         if strcmpi('raw', inExt)
-            inWavePath = normpath(char(strcat('F:/IFEFSR/ExpSphinx/BASE8/wav/', fileList{i}, '.raw')));
+            inWavePath = normpath(char(strcat(['F:/IFEFSR/ExpSphinx/BASE' ...
+                num2str(inFs) '/wav/'], fileList{i}, '.raw')));
             originSpeech = rawread(inWavePath);
         end
         [normOriginWave, ~, ~] = zscore(originSpeech);

@@ -42,10 +42,10 @@ end
 
 % obtain the mfcc parameters
 [ Tw, Ts, ~, ~, ~, ~, ~, ~ ] = getMFCCSphinxParams();
-Nw = round( 1E-3*Tw* 8000);    % frame duration (samples)
-Ns = round( 1E-3*Ts* 8000);    % frame shift (samples)
-Nw2 = round( 1E-3*Tw*outFs );    % frame duration (samples)
-Ns2 = round( 1E-3*Ts*outFs );    % frame shift (samples)
+Nw = round( 1E-3*Tw* inFs);    % frame duration (samples)
+Ns = round( 1E-3*Ts* inFs);    % frame shift (samples)
+Nw2 = round( 1E-3*Tw* outFs );    % frame duration (samples)
+Ns2 = round( 1E-3*Ts* outFs );    % frame shift (samples)
 
 frames = vec2frames( originSig, Nw, Ns, 'cols', @hamming, false );
 framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
@@ -54,7 +54,7 @@ framesSig = vec2frames( sig, Nw2, Ns2, 'cols', @hamming, false );
 inSpec = fft(framesSig, nfft, 1);
 originCeps = zeros(size(frames));
 fundFreq = zeros(1, size(frames, 2));
-originSpec = fft(frames, 0.5*nfft, 1);
+originSpec = fft(frames, (inFs/outFs)*nfft, 1);
 specWithHar = zeros(size(framesSig));
 synthHar = ones(nfft, size(frames, 2));
 
@@ -91,24 +91,26 @@ for i = 1:size(frames, 2)
     synthHar(:, i) = synthHar(:, i) .* magFilt;
     
     % retain lower frequency spectrum
-    halfOutFsIdx = floor(Nw/2);
+    halfOutFsIdx = floor(Nw / 4);
     [~, localMinPeaks] = findpeaks(-synthHar(:, i), ...
         'MinPeakDistance', minHD);
     halfLocalMinPeaksIdx = find(localMinPeaks > halfOutFsIdx, 1);
     lowerF0Idx = localMinPeaks(halfLocalMinPeaksIdx);
     upperF0Idx = localMinPeaks(min(halfLocalMinPeaksIdx + nHar, ...
         length(localMinPeaks)));
+    
     synthHar(1:lowerF0Idx, i) = 1;
     synthHar(upperF0Idx:end, i) = 0;
+    synthHar(end:-1:(end/2)+1, i) = synthHar(1:(end/2), i);
     
+    % retain original spectrum
     specWithHar(1:lowerF0Idx, i) = originSpec(1:lowerF0Idx, i);
+    specWithHar(end:-1:end-lowerF0Idx+1, i) = originSpec(end:-1:end-lowerF0Idx+1, i);
     
     % apply the harmonic filter to spectrum
-    specWithHar(lowerF0Idx:upperF0Idx, i) = inSpec(lowerF0Idx:upperF0Idx, i) ...
-        .* synthHar(lowerF0Idx:upperF0Idx, i);
-    
-    % duplicate the half spectrum
-    specWithHar(end:-1:(end/2)+1, i) = specWithHar(1:(end/2), i);
+    specWithHar(lowerF0Idx:end-lowerF0Idx+1, i) = ...
+        inSpec(lowerF0Idx:end-lowerF0Idx+1, i) ...
+        .* synthHar(lowerF0Idx:end-lowerF0Idx+1, i);
 end
 % j = sqrt(-1);
 % magInfo = fft(frames, nfft, 1);
