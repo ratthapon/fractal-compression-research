@@ -12,19 +12,16 @@ for fIdx = 1:nSubplot
     specData = varargin{(fIdx - 1)*2 + 1};
     specName = varargin{(fIdx - 1)*2 + 2};
     
-    subplot(1, nSubplot, fIdx), imagesc(-specData); 
+    freq = 1:size(specData, 1) * 8/256;
+    time = 1:size(specData, 2) * 16;
+    
+    subplot(1, nSubplot, fIdx), imagesc(time, freq, -specData); 
     set(gca, 'YDir', 'normal');
     
     %% set the figure's title and axes name
     title(specName);
     xlabel('Time (ms)');
     ylabel('Frequency (kHz)');
-    
-    %% set the axis tick information
-    ax = gca;
-    set(ax, 'XTickLabel', [1:6]*320);
-    set(ax, 'YTick', [32:32:256]);
-    set(ax, 'YTickLabel', [1:8]);
     
     colormap(gray);
 end
