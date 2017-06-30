@@ -37,5 +37,15 @@ stem(ceps)
 
 % formating output data
 datOutSig = [(1:size(sig))'*(1000/fs) sig];
-datOutSpec = [(1:(f0/2))'*df outSpec];
-datOutSpec = datOutSpec(2:2:end, :);
+datOutSpec = [(1:f0)'*df abs(outSpec)];
+datOutSpec = datOutSpec(1:(f0/2), :);
+datOutCeps = [(1:f0/2)'/(fs*2) abs(ceps)];
+
+% plot with real axis tick
+figure(3), subplot(3,1,1)
+plot(datOutSig(:, 1), datOutSig(:, 2))
+figure(3), subplot(3,1,2)
+stem(datOutSpec(:, 1), datOutSpec(:, 2))
+figure(3), subplot(3,1,3)
+stem(datOutCeps(:, 1), datOutCeps(:, 2))
+
