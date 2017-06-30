@@ -29,7 +29,8 @@ figure(2), subplot(3,1,2)
 stem(abs(outSpec))
 
 % extract cepstrumm
-DCT = dctm(128, f0);
+cn = 128;
+DCT = dctm(cn, f0);
 logspec = log( abs(outSpec) + 1 );
 ceps = DCT * logspec;
 figure(2), subplot(3,1,3)
@@ -39,7 +40,7 @@ stem(ceps)
 datOutSig = [(1:size(sig))'*(1000/fs) sig];
 datOutSpec = [(1:f0)'*df abs(outSpec)];
 datOutSpec = datOutSpec(1:(f0/2), :);
-datOutCeps = [(1:f0/2)'/(fs*2) abs(ceps)];
+datOutCeps = [(1:cn)' abs(ceps) (ones(cn, 1)*(fs*2))./(1:cn)'];
 
 % plot with real axis tick
 figure(3), subplot(3,1,1)
@@ -48,4 +49,6 @@ figure(3), subplot(3,1,2)
 stem(datOutSpec(:, 1), datOutSpec(:, 2))
 figure(3), subplot(3,1,3)
 stem(datOutCeps(:, 1), datOutCeps(:, 2))
+set(gca, 'xtick', (1:16:cn)')
+set(gca, 'xticklabel', datOutCeps(1:16:cn, 3))
 
