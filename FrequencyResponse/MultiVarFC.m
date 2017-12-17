@@ -7,7 +7,7 @@ rangePartition = rbs*ones(size(sig, 1)/rbs, 1);
 multiVarFC = MultiVarFixAFCEncoder( sig, rangePartition, ...
     1, lambda, nScale, rbs );
 
-REC_SIG = MultiVarFixAFCDecoder(multiVarFC, Fin_out(1), Fin_out(2), 1);
+REC_SIG = MultiVarFixAFCDecoder(multiVarFC, Fin_out(1), Fin_out(2), 15);
 
 
 %%

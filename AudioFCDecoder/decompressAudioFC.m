@@ -55,11 +55,11 @@ for iter = 1:maxIter
             end
         end
         d_p = d_p / AAFactor;
-        try 
-            d_p = decimate(d, 2, 'fir');
-        catch ex
-
-        end
+%         try 
+%             d_p = decimate(d, 2, 'fir');
+%         catch ex
+% 
+%         end
         
         %         X = rec(1,rIdx:rIdx+decodeFs-1);
         r = a.*d_p + b;
